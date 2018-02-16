@@ -1,0 +1,31 @@
+{
+  "name": "building-efficient-software",
+  "version": "0.1.0",
+  "description": "Companion repo for the talk \"Building Efficient Software\"",
+  "author": "Alex Fernández <alexfernandeznpm@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexfernandez/building-efficient-software/issues"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexfernandez/building-efficient-software.git"
+  },
+  "keywords": [
+    "Efficiency",
+    "Performance",
+    "efficient",
+    "software"
+  ],
+  "dependencies": {
+    "benchmark": "*"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "homepage": "https://github.com/alexfernandez/building-efficient-software#readme"
+}
