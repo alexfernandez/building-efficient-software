@@ -1,0 +1,214 @@
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/bin/multiply-many.js:) id{0,-1} start{10} ---
+(exports, require, module, __filename, __dirname) { 'use strict';
+
+const multiply = require('../lib/multiply.js')
+
+let total = 0
+
+for (let i = 0; i < 1000000; i++) {
+	total += multiply.multiply32(total, i)
+}
+
+console.log('many: %s', total)
+
+
+}
+--- END ---
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/lib/multiply.js:multiply32) id{0,0} start{225} ---
+(a, b) {
+	return a * b | 0
+}
+--- END ---
+INLINE (multiply32) id{0,0} AS 0 AT <-1:195>
+--- Raw source ---
+(exports, require, module, __filename, __dirname) { 'use strict';
+
+const multiply = require('../lib/multiply.js')
+
+let total = 0
+
+for (let i = 0; i < 1000000; i++) {
+	total += multiply.multiply32(total, i)
+}
+
+console.log('many: %s', total)
+
+
+})
+
+--- Optimized code ---
+optimization_id = 0
+source_position = 10
+kind = OPTIMIZED_FUNCTION
+stack_slots = 16
+compiler = turbofan
+Instructions (size = 520)
+0x155a09404f60     0  55             push rbp
+0x155a09404f61     1  4889e5         REX.W movq rbp,rsp
+0x155a09404f64     4  56             push rsi
+0x155a09404f65     5  57             push rdi
+0x155a09404f66     6  48ba00000000c5000000 REX.W movq rdx,0xc500000000
+0x155a09404f70    10  e8cbe4e8ff     call 0x155a09293440  (Abort)    ;; code: BUILTIN
+0x155a09404f75    15  cc             int3l
+0x155a09404f76    16  4883ec18       REX.W subq rsp,0x18
+0x155a09404f7a    1a  488975a0       REX.W movq [rbp-0x60],rsi
+0x155a09404f7e    1e  488b45d0       REX.W movq rax,[rbp-0x30]
+0x155a09404f82    22  a801           test al,0x1
+0x155a09404f84    24  0f855d010000   jnz 0x155a094050e7  <+0x187>
+0x155a09404f8a    2a  48bb0000000040420f00 REX.W movq rbx,0xf424000000000
+0x155a09404f94    34  483bc3         REX.W cmpq rax,rbx
+0x155a09404f97    37  0f8c0d000000   jl 0x155a09404faa  <+0x4a>
+0x155a09404f9d    3d  4c8b55c0       REX.W movq r10,[rbp-0x40]
+0x155a09404fa1    41  4c895598       REX.W movq [rbp-0x68],r10
+0x155a09404fa5    45  e9cf000000     jmp 0x155a09405079  <+0x119>
+0x155a09404faa    4a  493ba5e80c0000 REX.W cmpq rsp,[r13+0xce8]
+0x155a09404fb1    51  0f86e4000000   jna 0x155a0940509b  <+0x13b>
+0x155a09404fb7    57  488b5dc8       REX.W movq rbx,[rbp-0x38]
+0x155a09404fbb    5b  f6c301         testb rbx,0x1
+0x155a09404fbe    5e  0f8428010000   jz 0x155a094050ec  <+0x18c>
+0x155a09404fc4    64  48ba414a04774e1d0000 REX.W movq rdx,0x1d4e77044a41    ;; object: 0x1d4e77044a41 <Map(HOLEY_ELEMENTS)>
+0x155a09404fce    6e  483953ff       REX.W cmpq [rbx-0x1],rdx
+0x155a09404fd2    72  0f8519010000   jnz 0x155a094050f1  <+0x191>
+0x155a09404fd8    78  48ba89d1803e3c1e0000 REX.W movq rdx,0x1e3c3e80d189    ;; object: 0x1e3c3e80d189 <JSFunction multiply32 (sfi = 0x17117364f601)>
+0x155a09404fe2    82  48395317       REX.W cmpq [rbx+0x17],rdx
+0x155a09404fe6    86  0f850a010000   jnz 0x155a094050f6  <+0x196>
+0x155a09404fec    8c  488b55c0       REX.W movq rdx,[rbp-0x40]
+0x155a09404ff0    90  f6c201         testb rdx,0x1
+0x155a09404ff3    93  0f8502010000   jnz 0x155a094050fb  <+0x19b>
+0x155a09404ff9    99  488bc8         REX.W movq rcx,rax
+0x155a09404ffc    9c  48c1e920       REX.W shrq rcx, 32
+0x155a09405000    a0  488bf2         REX.W movq rsi,rdx
+0x155a09405003    a3  48c1ee20       REX.W shrq rsi, 32
+0x155a09405007    a7  488bfe         REX.W movq rdi,rsi
+0x155a0940500a    aa  0faff9         imull rdi,rcx
+0x155a0940500d    ad  0f80ed000000   jo 0x155a09405100  <+0x1a0>
+0x155a09405013    b3  03fe           addl rdi,rsi
+0x155a09405015    b5  0f80ea000000   jo 0x155a09405105  <+0x1a5>
+0x155a0940501b    bb  83e9ff         subl rcx,0xff
+0x155a0940501e    be  0f80e6000000   jo 0x155a0940510a  <+0x1aa>
+0x155a09405024    c4  6666660f1f840000000000 nop
+0x155a0940502f    cf  90             nop
+0x155a09405030    d0  81f940420f00   cmpl rcx,0xf4240
+0x155a09405036    d6  0f8d35000000   jge 0x155a09405071  <+0x111>
+0x155a0940503c    dc  493ba5e80c0000 REX.W cmpq rsp,[r13+0xce8]
+0x155a09405043    e3  0f8670000000   jna 0x155a094050b9  <+0x159>
+0x155a09405049    e9  488bc7         REX.W movq rax,rdi
+0x155a0940504c    ec  0fafc1         imull rax,rcx
+0x155a0940504f    ef  0f80ba000000   jo 0x155a0940510f  <+0x1af>
+0x155a09405055    f5  03c7           addl rax,rdi
+0x155a09405057    f7  0f80b7000000   jo 0x155a09405114  <+0x1b4>
+0x155a0940505d    fd  488bd1         REX.W movq rdx,rcx
+0x155a09405060   100  83eaff         subl rdx,0xff
+0x155a09405063   103  0f80b0000000   jo 0x155a09405119  <+0x1b9>
+0x155a09405069   109  488bf8         REX.W movq rdi,rax
+0x155a0940506c   10c  488bca         REX.W movq rcx,rdx
+0x155a0940506f   10f  ebbf           jmp 0x155a09405030  <+0xd0>
+0x155a09405071   111  48c1e720       REX.W shlq rdi, 32
+0x155a09405075   115  48897d98       REX.W movq [rbp-0x68],rdi
+0x155a09405079   119  48b9c97e035c663b0000 REX.W movq rcx,0x3b665c037ec9    ;; object: 0x3b665c037ec9 <String[7]: console>
+0x155a09405083   123  48b80000000012000000 REX.W movq rax,0x1200000000
+0x155a0940508d   12d  488b75a0       REX.W movq rsi,[rbp-0x60]
+0x155a09405091   131  e8ca84f5ff     call 0x155a0935d560  (LoadGlobalICTrampoline)    ;; code: LOAD_GLOBAL_IC
+0x155a09405096   136  e8ddefdfff     call 0x155a09204078     ;; soft deoptimization bailout 12
+0x155a0940509b   13b  48bb307c0c0100000000 REX.W movq rbx,0x10c7c30
+0x155a094050a5   145  33c0           xorl rax,rax
+0x155a094050a7   147  488b75a0       REX.W movq rsi,[rbp-0x60]
+0x155a094050ab   14b  e830f5e7ff     call 0x155a092845e0     ;; code: STUB, CEntryStub, minor: 8
+0x155a094050b0   150  488b45d0       REX.W movq rax,[rbp-0x30]
+0x155a094050b4   154  e9fefeffff     jmp 0x155a09404fb7  <+0x57>
+0x155a094050b9   159  48897d98       REX.W movq [rbp-0x68],rdi
+0x155a094050bd   15d  48894d90       REX.W movq [rbp-0x70],rcx
+0x155a094050c1   161  48bb307c0c0100000000 REX.W movq rbx,0x10c7c30
+0x155a094050cb   16b  33c0           xorl rax,rax
+0x155a094050cd   16d  488b75a0       REX.W movq rsi,[rbp-0x60]
+0x155a094050d1   171  e80af5e7ff     call 0x155a092845e0     ;; code: STUB, CEntryStub, minor: 8
+0x155a094050d6   176  488b5dc8       REX.W movq rbx,[rbp-0x38]
+0x155a094050da   17a  488b7d98       REX.W movq rdi,[rbp-0x68]
+0x155a094050de   17e  488b4d90       REX.W movq rcx,[rbp-0x70]
+0x155a094050e2   182  e962ffffff     jmp 0x155a09405049  <+0xe9>
+0x155a094050e7   187  e814efcfff     call 0x155a09104000     ;; deoptimization bailout 0
+0x155a094050ec   18c  e819efcfff     call 0x155a0910400a     ;; deoptimization bailout 1
+0x155a094050f1   191  e81eefcfff     call 0x155a09104014     ;; deoptimization bailout 2
+0x155a094050f6   196  e823efcfff     call 0x155a0910401e     ;; deoptimization bailout 3
+0x155a094050fb   19b  e828efcfff     call 0x155a09104028     ;; deoptimization bailout 4
+0x155a09405100   1a0  e82defcfff     call 0x155a09104032     ;; deoptimization bailout 5
+0x155a09405105   1a5  e832efcfff     call 0x155a0910403c     ;; deoptimization bailout 6
+0x155a0940510a   1aa  e837efcfff     call 0x155a09104046     ;; deoptimization bailout 7
+0x155a0940510f   1af  e83cefcfff     call 0x155a09104050     ;; deoptimization bailout 8
+0x155a09405114   1b4  e841efcfff     call 0x155a0910405a     ;; deoptimization bailout 9
+0x155a09405119   1b9  e846efcfff     call 0x155a09104064     ;; deoptimization bailout 10
+0x155a0940511e   1be  e84befcfff     call 0x155a0910406e     ;; deoptimization bailout 11
+0x155a09405123   1c3  e85aefcfff     call 0x155a09104082     ;; deoptimization bailout 13
+0x155a09405128   1c8  e85fefcfff     call 0x155a0910408c     ;; deoptimization bailout 14
+0x155a0940512d   1cd  90             nop
+0x155a0940512e   1ce  90             nop
+0x155a0940512f   1cf  90             nop
+0x155a09405130   1d0  90             nop
+0x155a09405131   1d1  90             nop
+0x155a09405132   1d2  90             nop
+0x155a09405133   1d3  90             nop
+0x155a09405134   1d4  90             nop
+0x155a09405135   1d5  90             nop
+0x155a09405136   1d6  90             nop
+0x155a09405137   1d7  90             nop
+0x155a09405138   1d8  90             nop
+0x155a09405139   1d9  90             nop
+0x155a0940513a   1da  6690           nop
+
+Source positions:
+ pc offset  position
+       119       219
+       159       140
+
+Inlined functions (count = 1)
+ 0x17117364f601 <SharedFunctionInfo multiply32>
+
+Deoptimization Input Data (deopt points = 15)
+ index  bytecode-offset  trampoline_pc     pc
+     0               23            187     NA 
+     1               23            18c     NA 
+     2               23            191     NA 
+     3               23            196     NA 
+     4               23            19b     NA 
+     5               23            1a0     NA 
+     6               23            1a5     NA 
+     7               23            1aa     NA 
+     8               23            1af     NA 
+     9               23            1b4     NA 
+    10               23            1b9     NA 
+    11               58            1be    136 
+    12               63             NA     NA 
+    13               28            1c3    150 
+    14               28            1c8    176 
+
+Safepoints (size = 44)
+0x155a09405096   136  0110000000000000 (sp -> fp)      11
+0x155a094050b0   150  0010001110000000 (sp -> fp)      13
+0x155a094050d6   176  0010000100000000 (sp -> fp)      14
+
+RelocInfo (size = 41)
+0x155a09404f71  code target (BUILTIN)  (0x155a09293440)
+0x155a09404fc6  embedded object  (0x1d4e77044a41 <Map(HOLEY_ELEMENTS)>)
+0x155a09404fda  embedded object  (0x1e3c3e80d189 <JSFunction multiply32 (sfi = 0x17117364f601)>)
+0x155a0940507b  embedded object  (0x3b665c037ec9 <String[7]: console>)
+0x155a09405092  code target (LOAD_GLOBAL_IC)  (0x155a0935d560)
+0x155a09405097  runtime entry
+0x155a094050ac  code target (STUB)  (0x155a092845e0)
+0x155a094050d2  code target (STUB)  (0x155a092845e0)
+0x155a094050e8  runtime entry  (deoptimization bailout 0)
+0x155a094050ed  runtime entry  (deoptimization bailout 1)
+0x155a094050f2  runtime entry  (deoptimization bailout 2)
+0x155a094050f7  runtime entry  (deoptimization bailout 3)
+0x155a094050fc  runtime entry  (deoptimization bailout 4)
+0x155a09405101  runtime entry  (deoptimization bailout 5)
+0x155a09405106  runtime entry  (deoptimization bailout 6)
+0x155a0940510b  runtime entry  (deoptimization bailout 7)
+0x155a09405110  runtime entry  (deoptimization bailout 8)
+0x155a09405115  runtime entry  (deoptimization bailout 9)
+0x155a0940511a  runtime entry  (deoptimization bailout 10)
+0x155a0940511f  runtime entry  (deoptimization bailout 11)
+0x155a09405124  runtime entry  (deoptimization bailout 13)
+0x155a09405129  runtime entry  (deoptimization bailout 14)
+
+--- End code ---
+many: 0

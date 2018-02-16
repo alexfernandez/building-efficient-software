@@ -1,0 +1,1595 @@
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/node_modules/cuint/lib/uint32.js:fromNumber) id{0,-1} start{1506} ---
+(value) {
+		this._low = value & 0xFFFF
+		this._high = value >>> 16
+
+		return this
+	}
+--- END ---
+--- Raw source ---
+(value) {
+		this._low = value & 0xFFFF
+		this._high = value >>> 16
+
+		return this
+	}
+
+
+--- Optimized code ---
+optimization_id = 0
+source_position = 1506
+kind = OPTIMIZED_FUNCTION
+name = fromNumber
+stack_slots = 4
+compiler = turbofan
+Instructions (size = 167)
+0x2254cef84f60     0  55             push rbp
+0x2254cef84f61     1  4889e5         REX.W movq rbp,rsp
+0x2254cef84f64     4  56             push rsi
+0x2254cef84f65     5  57             push rdi
+0x2254cef84f66     6  493ba5e80c0000 REX.W cmpq rsp,[r13+0xce8]
+0x2254cef84f6d     d  0f864b000000   jna 0x2254cef84fbe  <+0x5e>
+0x2254cef84f73    13  488b4510       REX.W movq rax,[rbp+0x10]
+0x2254cef84f77    17  a801           test al,0x1
+0x2254cef84f79    19  0f8556000000   jnz 0x2254cef84fd5  <+0x75>
+0x2254cef84f7f    1f  488bd8         REX.W movq rbx,rax
+0x2254cef84f82    22  48c1eb20       REX.W shrq rbx, 32
+0x2254cef84f86    26  0fb7d3         movzxwl rdx,rbx
+0x2254cef84f89    29  c1eb10         shrl rbx, 16
+0x2254cef84f8c    2c  488b7518       REX.W movq rsi,[rbp+0x18]
+0x2254cef84f90    30  48b9293154e0de330000 REX.W movq rcx,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef84f9a    3a  48394eff       REX.W cmpq [rsi-0x1],rcx
+0x2254cef84f9e    3e  0f8536000000   jnz 0x2254cef84fda  <+0x7a>
+0x2254cef84fa4    44  48c1e220       REX.W shlq rdx, 32
+0x2254cef84fa8    48  48895617       REX.W movq [rsi+0x17],rdx
+0x2254cef84fac    4c  48c1e320       REX.W shlq rbx, 32
+0x2254cef84fb0    50  48895e1f       REX.W movq [rsi+0x1f],rbx
+0x2254cef84fb4    54  488bc6         REX.W movq rax,rsi
+0x2254cef84fb7    57  488be5         REX.W movq rsp,rbp
+0x2254cef84fba    5a  5d             pop rbp
+0x2254cef84fbb    5b  c21000         ret 0x10
+0x2254cef84fbe    5e  48bb307c0c0100000000 REX.W movq rbx,0x10c7c30
+0x2254cef84fc8    68  33c0           xorl rax,rax
+0x2254cef84fca    6a  488b75f8       REX.W movq rsi,[rbp-0x8]
+0x2254cef84fce    6e  e80df6e7ff     call 0x2254cee045e0     ;; code: STUB, CEntryStub, minor: 8
+0x2254cef84fd3    73  eb9e           jmp 0x2254cef84f73  <+0x13>
+0x2254cef84fd5    75  e826f0cfff     call 0x2254cec84000     ;; deoptimization bailout 0
+0x2254cef84fda    7a  e82bf0cfff     call 0x2254cec8400a     ;; deoptimization bailout 1
+0x2254cef84fdf    7f  e830f0cfff     call 0x2254cec84014     ;; deoptimization bailout 2
+0x2254cef84fe4    84  90             nop
+0x2254cef84fe5    85  90             nop
+0x2254cef84fe6    86  90             nop
+0x2254cef84fe7    87  90             nop
+0x2254cef84fe8    88  90             nop
+0x2254cef84fe9    89  90             nop
+0x2254cef84fea    8a  90             nop
+0x2254cef84feb    8b  90             nop
+0x2254cef84fec    8c  90             nop
+0x2254cef84fed    8d  90             nop
+0x2254cef84fee    8e  90             nop
+0x2254cef84fef    8f  90             nop
+0x2254cef84ff0    90  90             nop
+0x2254cef84ff1    91  0f1f00         nop
+
+Source positions:
+ pc offset  position
+        5e      1506
+
+Inlined functions (count = 0)
+
+Deoptimization Input Data (deopt points = 3)
+ index  bytecode-offset  trampoline_pc     pc
+     0                0             75     NA 
+     1                0             7a     NA 
+     2                0             7f     73 
+
+Safepoints (size = 19)
+0x2254cef84fd3    73  0000 (sp -> fp)       2
+
+RelocInfo (size = 8)
+0x2254cef84f92  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef84fcf  code target (STUB)  (0x2254cee045e0)
+0x2254cef84fd6  runtime entry  (deoptimization bailout 0)
+0x2254cef84fdb  runtime entry  (deoptimization bailout 1)
+0x2254cef84fe0  runtime entry  (deoptimization bailout 2)
+
+--- End code ---
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/node_modules/cuint/lib/uint32.js:UINT32.multiply) id{1,-1} start{3306} ---
+(other) {
+		/*
+			a = a00 + a16
+			b = b00 + b16
+			a*b = (a00 + a16)(b00 + b16)
+				= a00b00 + a00b16 + a16b00 + a16b16
+
+			a16b16 overflows the 32bits
+		 */
+		var a16 = this._high
+		var a00 = this._low
+		var b16 = other._high
+		var b00 = other._low
+
+/* Removed to increase speed under normal circumstances (i.e. not multiplying by 0 or 1)
+		// this == 0 or other == 1: nothing to do
+		if ((a00 == 0 && a16 == 0) || (b00 == 1 && b16 == 0)) return this
+
+		// other == 0 or this == 1: this = other
+		if ((b00 == 0 && b16 == 0) || (a00 == 1 && a16 == 0)) {
+			this._low = other._low
+			this._high = other._high
+			return this
+		}
+*/
+
+		var c16, c00
+		c00 = a00 * b00
+		c16 = c00 >>> 16
+
+		c16 += a16 * b00
+		c16 &= 0xFFFF		// Not required but improves performance
+		c16 += a00 * b16
+
+		this._low = c00 & 0xFFFF
+		this._high = c16 & 0xFFFF
+
+		return this
+	}
+--- END ---
+--- Raw source ---
+(other) {
+		/*
+			a = a00 + a16
+			b = b00 + b16
+			a*b = (a00 + a16)(b00 + b16)
+				= a00b00 + a00b16 + a16b00 + a16b16
+
+			a16b16 overflows the 32bits
+		 */
+		var a16 = this._high
+		var a00 = this._low
+		var b16 = other._high
+		var b00 = other._low
+
+/* Removed to increase speed under normal circumstances (i.e. not multiplying by 0 or 1)
+		// this == 0 or other == 1: nothing to do
+		if ((a00 == 0 && a16 == 0) || (b00 == 1 && b16 == 0)) return this
+
+		// other == 0 or this == 1: this = other
+		if ((b00 == 0 && b16 == 0) || (a00 == 1 && a16 == 0)) {
+			this._low = other._low
+			this._high = other._high
+			return this
+		}
+*/
+
+		var c16, c00
+		c00 = a00 * b00
+		c16 = c00 >>> 16
+
+		c16 += a16 * b00
+		c16 &= 0xFFFF		// Not required but improves performance
+		c16 += a00 * b16
+
+		this._low = c00 & 0xFFFF
+		this._high = c16 & 0xFFFF
+
+		return this
+	}
+
+
+--- Optimized code ---
+optimization_id = 1
+source_position = 3306
+kind = OPTIMIZED_FUNCTION
+name = UINT32.multiply
+stack_slots = 4
+compiler = turbofan
+Instructions (size = 271)
+0x2254cef85080     0  55             push rbp
+0x2254cef85081     1  4889e5         REX.W movq rbp,rsp
+0x2254cef85084     4  56             push rsi
+0x2254cef85085     5  57             push rdi
+0x2254cef85086     6  493ba5e80c0000 REX.W cmpq rsp,[r13+0xce8]
+0x2254cef8508d     d  0f8692000000   jna 0x2254cef85125  <+0xa5>
+0x2254cef85093    13  488b5d18       REX.W movq rbx,[rbp+0x18]
+0x2254cef85097    17  48b8293154e0de330000 REX.W movq rax,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef850a1    21  483943ff       REX.W cmpq [rbx-0x1],rax
+0x2254cef850a5    25  0f8594000000   jnz 0x2254cef8513f  <+0xbf>
+0x2254cef850ab    2b  488b5510       REX.W movq rdx,[rbp+0x10]
+0x2254cef850af    2f  f6c201         testb rdx,0x1
+0x2254cef850b2    32  0f848c000000   jz 0x2254cef85144  <+0xc4>
+0x2254cef850b8    38  483942ff       REX.W cmpq [rdx-0x1],rax
+0x2254cef850bc    3c  0f8587000000   jnz 0x2254cef85149  <+0xc9>
+0x2254cef850c2    42  8b421b         movl rax,[rdx+0x1b]
+0x2254cef850c5    45  8b4b1b         movl rcx,[rbx+0x1b]
+0x2254cef850c8    48  488bf1         REX.W movq rsi,rcx
+0x2254cef850cb    4b  0faff0         imull rsi,rax
+0x2254cef850ce    4e  0f807a000000   jo 0x2254cef8514e  <+0xce>
+0x2254cef850d4    54  8b7b23         movl rdi,[rbx+0x23]
+0x2254cef850d7    57  0fafc7         imull rax,rdi
+0x2254cef850da    5a  0f8073000000   jo 0x2254cef85153  <+0xd3>
+0x2254cef850e0    60  488bfe         REX.W movq rdi,rsi
+0x2254cef850e3    63  c1ef10         shrl rdi, 16
+0x2254cef850e6    66  03c7           addl rax,rdi
+0x2254cef850e8    68  0f806a000000   jo 0x2254cef85158  <+0xd8>
+0x2254cef850ee    6e  8b7a23         movl rdi,[rdx+0x23]
+0x2254cef850f1    71  0faff9         imull rdi,rcx
+0x2254cef850f4    74  0f8063000000   jo 0x2254cef8515d  <+0xdd>
+0x2254cef850fa    7a  0fb7c0         movzxwl rax,rax
+0x2254cef850fd    7d  03f8           addl rdi,rax
+0x2254cef850ff    7f  0f805d000000   jo 0x2254cef85162  <+0xe2>
+0x2254cef85105    85  0fb7c6         movzxwl rax,rsi
+0x2254cef85108    88  0fb7d7         movzxwl rdx,rdi
+0x2254cef8510b    8b  48c1e020       REX.W shlq rax, 32
+0x2254cef8510f    8f  48894317       REX.W movq [rbx+0x17],rax
+0x2254cef85113    93  48c1e220       REX.W shlq rdx, 32
+0x2254cef85117    97  4889531f       REX.W movq [rbx+0x1f],rdx
+0x2254cef8511b    9b  488bc3         REX.W movq rax,rbx
+0x2254cef8511e    9e  488be5         REX.W movq rsp,rbp
+0x2254cef85121    a1  5d             pop rbp
+0x2254cef85122    a2  c21000         ret 0x10
+0x2254cef85125    a5  48bb307c0c0100000000 REX.W movq rbx,0x10c7c30
+0x2254cef8512f    af  33c0           xorl rax,rax
+0x2254cef85131    b1  488b75f8       REX.W movq rsi,[rbp-0x8]
+0x2254cef85135    b5  e8a6f4e7ff     call 0x2254cee045e0     ;; code: STUB, CEntryStub, minor: 8
+0x2254cef8513a    ba  e954ffffff     jmp 0x2254cef85093  <+0x13>
+0x2254cef8513f    bf  e8bceecfff     call 0x2254cec84000     ;; deoptimization bailout 0
+0x2254cef85144    c4  e8c1eecfff     call 0x2254cec8400a     ;; deoptimization bailout 1
+0x2254cef85149    c9  e8c6eecfff     call 0x2254cec84014     ;; deoptimization bailout 2
+0x2254cef8514e    ce  e8cbeecfff     call 0x2254cec8401e     ;; deoptimization bailout 3
+0x2254cef85153    d3  e8d0eecfff     call 0x2254cec84028     ;; deoptimization bailout 4
+0x2254cef85158    d8  e8d5eecfff     call 0x2254cec84032     ;; deoptimization bailout 5
+0x2254cef8515d    dd  e8daeecfff     call 0x2254cec8403c     ;; deoptimization bailout 6
+0x2254cef85162    e2  e8dfeecfff     call 0x2254cec84046     ;; deoptimization bailout 7
+0x2254cef85167    e7  e8e4eecfff     call 0x2254cec84050     ;; deoptimization bailout 8
+0x2254cef8516c    ec  90             nop
+0x2254cef8516d    ed  90             nop
+0x2254cef8516e    ee  90             nop
+0x2254cef8516f    ef  90             nop
+0x2254cef85170    f0  90             nop
+0x2254cef85171    f1  90             nop
+0x2254cef85172    f2  90             nop
+0x2254cef85173    f3  90             nop
+0x2254cef85174    f4  90             nop
+0x2254cef85175    f5  90             nop
+0x2254cef85176    f6  90             nop
+0x2254cef85177    f7  90             nop
+0x2254cef85178    f8  90             nop
+0x2254cef85179    f9  0f1f00         nop
+
+Source positions:
+ pc offset  position
+        a5      3306
+
+Inlined functions (count = 0)
+
+Deoptimization Input Data (deopt points = 9)
+ index  bytecode-offset  trampoline_pc     pc
+     0                0             bf     NA 
+     1                0             c4     NA 
+     2                0             c9     NA 
+     3                0             ce     NA 
+     4                0             d3     NA 
+     5                0             d8     NA 
+     6                0             dd     NA 
+     7                0             e2     NA 
+     8                0             e7     ba 
+
+Safepoints (size = 19)
+0x2254cef8513a    ba  0000 (sp -> fp)       8
+
+RelocInfo (size = 22)
+0x2254cef85099  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85136  code target (STUB)  (0x2254cee045e0)
+0x2254cef85140  runtime entry  (deoptimization bailout 0)
+0x2254cef85145  runtime entry  (deoptimization bailout 1)
+0x2254cef8514a  runtime entry  (deoptimization bailout 2)
+0x2254cef8514f  runtime entry  (deoptimization bailout 3)
+0x2254cef85154  runtime entry  (deoptimization bailout 4)
+0x2254cef85159  runtime entry  (deoptimization bailout 5)
+0x2254cef8515e  runtime entry  (deoptimization bailout 6)
+0x2254cef85163  runtime entry  (deoptimization bailout 7)
+0x2254cef85168  runtime entry  (deoptimization bailout 8)
+
+--- End code ---
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/lib/multiply.js:multiplyUint32) id{2,-1} start{219} ---
+(a, b) {
+  const first = uint32(a)
+  const second = uint32(b)
+  return first.multiply(second).toNumber()
+}
+--- END ---
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/node_modules/cuint/lib/uint32.js:UINT32.toNumber) id{2,0} start{2174} ---
+() {
+		return (this._high * 65536) + this._low
+	}
+--- END ---
+INLINE (UINT32.toNumber) id{2,0} AS 0 AT <-1:313>
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/node_modules/cuint/lib/uint32.js:UINT32.multiply) id{2,1} start{3306} ---
+(other) {
+		/*
+			a = a00 + a16
+			b = b00 + b16
+			a*b = (a00 + a16)(b00 + b16)
+				= a00b00 + a00b16 + a16b00 + a16b16
+
+			a16b16 overflows the 32bits
+		 */
+		var a16 = this._high
+		var a00 = this._low
+		var b16 = other._high
+		var b00 = other._low
+
+/* Removed to increase speed under normal circumstances (i.e. not multiplying by 0 or 1)
+		// this == 0 or other == 1: nothing to do
+		if ((a00 == 0 && a16 == 0) || (b00 == 1 && b16 == 0)) return this
+
+		// other == 0 or this == 1: this = other
+		if ((b00 == 0 && b16 == 0) || (a00 == 1 && a16 == 0)) {
+			this._low = other._low
+			this._high = other._high
+			return this
+		}
+*/
+
+		var c16, c00
+		c00 = a00 * b00
+		c16 = c00 >>> 16
+
+		c16 += a16 * b00
+		c16 &= 0xFFFF		// Not required but improves performance
+		c16 += a00 * b16
+
+		this._low = c00 & 0xFFFF
+		this._high = c16 & 0xFFFF
+
+		return this
+	}
+--- END ---
+INLINE (UINT32.multiply) id{2,1} AS 1 AT <-1:296>
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/node_modules/cuint/lib/uint32.js:UINT32) id{2,2} start{747} ---
+(l, h) {
+		if ( !(this instanceof UINT32) )
+			return new UINT32(l, h)
+
+		this._low = 0
+		this._high = 0
+		this.remainder = null
+		if (typeof h == 'undefined')
+			return fromNumber.call(this, l)
+
+		if (typeof l == 'string')
+			return fromString.call(this, l, h)
+
+		fromBits.call(this, l, h)
+	}
+--- END ---
+INLINE (UINT32) id{2,2} AS 2 AT <-1:271>
+INLINE (UINT32) id{2,2} AS 3 AT <-1:244>
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/node_modules/cuint/lib/uint32.js:fromNumber) id{2,3} start{1506} ---
+(value) {
+		this._low = value & 0xFFFF
+		this._high = value >>> 16
+
+		return this
+	}
+--- END ---
+INLINE (fromNumber) id{2,3} AS 4 AT <3:928>
+INLINE (fromNumber) id{2,3} AS 5 AT <2:928>
+--- Raw source ---
+(a, b) {
+  const first = uint32(a)
+  const second = uint32(b)
+  return first.multiply(second).toNumber()
+}
+
+
+--- Optimized code ---
+optimization_id = 2
+source_position = 219
+kind = OPTIMIZED_FUNCTION
+name = multiplyUint32
+stack_slots = 5
+compiler = turbofan
+Instructions (size = 1359)
+0x2254cef85980     0  55             push rbp
+0x2254cef85981     1  4889e5         REX.W movq rbp,rsp
+0x2254cef85984     4  56             push rsi
+0x2254cef85985     5  57             push rdi
+0x2254cef85986     6  4883ec08       REX.W subq rsp,0x8
+0x2254cef8598a     a  493ba5e80c0000 REX.W cmpq rsp,[r13+0xce8]
+0x2254cef85991    11  0f86e1020000   jna 0x2254cef85c78  <+0x2f8>
+0x2254cef85997    17  49b871b079a532350000 REX.W movq r8,0x3532a579b071    ;; object: 0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef859a1    21  48b9c12450e0de330000 REX.W movq rcx,0x33dee05024c1    ;; object: 0x33dee05024c1 <Map(HOLEY_ELEMENTS)>
+0x2254cef859ab    2b  493948ff       REX.W cmpq [r8-0x1],rcx
+0x2254cef859af    2f  0f855f040000   jnz 0x2254cef85e14  <+0x494>
+0x2254cef859b5    35  49bb49b379a532350000 REX.W movq r11,0x3532a579b349    ;; object: 0x3532a579b349 <Object map = 0x33dee0543b79>
+0x2254cef859bf    3f  48b8b1bef018c42b0000 REX.W movq rax,0x2bc418f0beb1    ;; object: 0x2bc418f0beb1 <JSGlobal Object>
+0x2254cef859c9    49  4c8bc8         REX.W movq r9,rax
+0x2254cef859cc    4c  0f1f4000       nop
+0x2254cef859d0    50  488b58ff       REX.W movq rbx,[rax-0x1]
+0x2254cef859d4    54  0fb6530b       movzxbl rdx,[rbx+0xb]
+0x2254cef859d8    58  80fab7         cmpb dl,0xb7
+0x2254cef859db    5b  0f86b1020000   jna 0x2254cef85c92  <+0x312>
+0x2254cef859e1    61  488b4317       REX.W movq rax,[rbx+0x17]
+0x2254cef859e5    65  493945b0       REX.W cmpq [r13-0x50],rax
+0x2254cef859e9    69  0f849c000000   jz 0x2254cef85a8b  <+0x10b>
+0x2254cef859ef    6f  493bc3         REX.W cmpq rax,r11
+0x2254cef859f2    72  75dc           jnz 0x2254cef859d0  <+0x50>
+0x2254cef859f4    74  49bcc92f54e0de330000 REX.W movq r12,0x33dee0542fc9    ;; object: 0x33dee0542fc9 <Map(HOLEY_ELEMENTS)>
+0x2254cef859fe    7e  4d3961ff       REX.W cmpq [r9-0x1],r12
+0x2254cef85a02    82  0f8511040000   jnz 0x2254cef85e19  <+0x499>
+0x2254cef85a08    88  49c7411700000000 REX.W movq [r9+0x17],0x0
+0x2254cef85a10    90  49c7411f00000000 REX.W movq [r9+0x1f],0x0
+0x2254cef85a18    98  49be293154e0de330000 REX.W movq r14,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef85a22    a2  4d8971ff       REX.W movq [r9-0x1],r14
+0x2254cef85a26    a6  48c7c30000f8ff REX.W movq rbx,0xfff80000
+0x2254cef85a2d    ad  4923d9         REX.W andq rbx,r9
+0x2254cef85a30    b0  f6430804       testb [rbx+0x8],0x4
+0x2254cef85a34    b4  0f85b8030000   jnz 0x2254cef85df2  <+0x472>
+0x2254cef85a3a    ba  4d8b7db0       REX.W movq r15,[r13-0x50]
+0x2254cef85a3e    be  4d897927       REX.W movq [r9+0x27],r15
+0x2254cef85a42    c2  488b4518       REX.W movq rax,[rbp+0x18]
+0x2254cef85a46    c6  48c1e820       REX.W shrq rax, 32
+0x2254cef85a4a    ca  0fb7d8         movzxwl rbx,rax
+0x2254cef85a4d    cd  48ba01b179a532350000 REX.W movq rdx,0x3532a579b101    ;; object: 0x3532a579b101 <JSFunction fromNumber (sfi = 0x1be8c20d2ff9)>
+0x2254cef85a57    d7  48394aff       REX.W cmpq [rdx-0x1],rcx
+0x2254cef85a5b    db  0f85bd030000   jnz 0x2254cef85e1e  <+0x49e>
+0x2254cef85a61    e1  c1e810         shrl rax, 16
+0x2254cef85a64    e4  488b7518       REX.W movq rsi,[rbp+0x18]
+0x2254cef85a68    e8  40f6c601       testb rsi,0x1
+0x2254cef85a6c    ec  0f85b1030000   jnz 0x2254cef85e23  <+0x4a3>
+0x2254cef85a72    f2  48c1e320       REX.W shlq rbx, 32
+0x2254cef85a76    f6  49895917       REX.W movq [r9+0x17],rbx
+0x2254cef85a7a    fa  48c1e020       REX.W shlq rax, 32
+0x2254cef85a7e    fe  4989411f       REX.W movq [r9+0x1f],rax
+0x2254cef85a82   102  4c894de8       REX.W movq [rbp-0x18],r9
+0x2254cef85a86   106  e929000000     jmp 0x2254cef85ab4  <+0x134>
+0x2254cef85a8b   10b  498b5da0       REX.W movq rbx,[r13-0x60]
+0x2254cef85a8f   10f  53             push rbx
+0x2254cef85a90   110  488b7518       REX.W movq rsi,[rbp+0x18]
+0x2254cef85a94   114  56             push rsi
+0x2254cef85a95   115  53             push rbx
+0x2254cef85a96   116  48be21b079a532350000 REX.W movq rsi,0x3532a579b021    ;; object: 0x3532a579b021 <FixedArray[8]>
+0x2254cef85aa0   120  b802000000     movl rax,0x2
+0x2254cef85aa5   125  498bf8         REX.W movq rdi,r8
+0x2254cef85aa8   128  498bd0         REX.W movq rdx,r8
+0x2254cef85aab   12b  e8f0fbe7ff     call 0x2254cee056a0  (JSConstructStubGenericUnrestrictedReturn)    ;; code: BUILTIN
+0x2254cef85ab0   130  488945e8       REX.W movq [rbp-0x18],rax
+0x2254cef85ab4   134  48bf71b079a532350000 REX.W movq rdi,0x3532a579b071    ;; object: 0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef85abe   13e  48b8c12450e0de330000 REX.W movq rax,0x33dee05024c1    ;; object: 0x33dee05024c1 <Map(HOLEY_ELEMENTS)>
+0x2254cef85ac8   148  483947ff       REX.W cmpq [rdi-0x1],rax
+0x2254cef85acc   14c  0f855b030000   jnz 0x2254cef85e2d  <+0x4ad>
+0x2254cef85ad2   152  48bbb1bef018c42b0000 REX.W movq rbx,0x2bc418f0beb1    ;; object: 0x2bc418f0beb1 <JSGlobal Object>
+0x2254cef85adc   15c  48ba49b379a532350000 REX.W movq rdx,0x3532a579b349    ;; object: 0x3532a579b349 <Object map = 0x33dee0543b79>
+0x2254cef85ae6   166  66660f1f840000000000 nop
+0x2254cef85af0   170  488b4bff       REX.W movq rcx,[rbx-0x1]
+0x2254cef85af4   174  0fb6710b       movzxbl rsi,[rcx+0xb]
+0x2254cef85af8   178  4080feb7       cmpb sil,0xb7
+0x2254cef85afc   17c  0f8659020000   jna 0x2254cef85d5b  <+0x3db>
+0x2254cef85b02   182  488b5917       REX.W movq rbx,[rcx+0x17]
+0x2254cef85b06   186  49395db0       REX.W cmpq [r13-0x50],rbx
+0x2254cef85b0a   18a  0f84a5000000   jz 0x2254cef85bb5  <+0x235>
+0x2254cef85b10   190  483bda         REX.W cmpq rbx,rdx
+0x2254cef85b13   193  75db           jnz 0x2254cef85af0  <+0x170>
+0x2254cef85b15   195  48bbb1bef018c42b0000 REX.W movq rbx,0x2bc418f0beb1    ;; object: 0x2bc418f0beb1 <JSGlobal Object>
+0x2254cef85b1f   19f  49bcc92f54e0de330000 REX.W movq r12,0x33dee0542fc9    ;; object: 0x33dee0542fc9 <Map(HOLEY_ELEMENTS)>
+0x2254cef85b29   1a9  4c3963ff       REX.W cmpq [rbx-0x1],r12
+0x2254cef85b2d   1ad  0f85ff020000   jnz 0x2254cef85e32  <+0x4b2>
+0x2254cef85b33   1b3  48c7431700000000 REX.W movq [rbx+0x17],0x0
+0x2254cef85b3b   1bb  48c7431f00000000 REX.W movq [rbx+0x1f],0x0
+0x2254cef85b43   1c3  49be293154e0de330000 REX.W movq r14,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef85b4d   1cd  4c8973ff       REX.W movq [rbx-0x1],r14
+0x2254cef85b51   1d1  48c7c10000f8ff REX.W movq rcx,0xfff80000
+0x2254cef85b58   1d8  4823cb         REX.W andq rcx,rbx
+0x2254cef85b5b   1db  f6410804       testb [rcx+0x8],0x4
+0x2254cef85b5f   1df  0f856b020000   jnz 0x2254cef85dd0  <+0x450>
+0x2254cef85b65   1e5  4d8b7db0       REX.W movq r15,[r13-0x50]
+0x2254cef85b69   1e9  4c897b27       REX.W movq [rbx+0x27],r15
+0x2254cef85b6d   1ed  488b5510       REX.W movq rdx,[rbp+0x10]
+0x2254cef85b71   1f1  48c1ea20       REX.W shrq rdx, 32
+0x2254cef85b75   1f5  0fb7ca         movzxwl rcx,rdx
+0x2254cef85b78   1f8  48be01b179a532350000 REX.W movq rsi,0x3532a579b101    ;; object: 0x3532a579b101 <JSFunction fromNumber (sfi = 0x1be8c20d2ff9)>
+0x2254cef85b82   202  483946ff       REX.W cmpq [rsi-0x1],rax
+0x2254cef85b86   206  0f85ab020000   jnz 0x2254cef85e37  <+0x4b7>
+0x2254cef85b8c   20c  c1ea10         shrl rdx, 16
+0x2254cef85b8f   20f  4c8b4510       REX.W movq r8,[rbp+0x10]
+0x2254cef85b93   213  41f6c001       testb r8,0x1
+0x2254cef85b97   217  0f859f020000   jnz 0x2254cef85e3c  <+0x4bc>
+0x2254cef85b9d   21d  48c1e120       REX.W shlq rcx, 32
+0x2254cef85ba1   221  48894b17       REX.W movq [rbx+0x17],rcx
+0x2254cef85ba5   225  48c1e220       REX.W shlq rdx, 32
+0x2254cef85ba9   229  4889531f       REX.W movq [rbx+0x1f],rdx
+0x2254cef85bad   22d  488bc3         REX.W movq rax,rbx
+0x2254cef85bb0   230  e923000000     jmp 0x2254cef85bd8  <+0x258>
+0x2254cef85bb5   235  498b5da0       REX.W movq rbx,[r13-0x60]
+0x2254cef85bb9   239  53             push rbx
+0x2254cef85bba   23a  4c8b4510       REX.W movq r8,[rbp+0x10]
+0x2254cef85bbe   23e  4150           push r8
+0x2254cef85bc0   240  53             push rbx
+0x2254cef85bc1   241  48be21b079a532350000 REX.W movq rsi,0x3532a579b021    ;; object: 0x3532a579b021 <FixedArray[8]>
+0x2254cef85bcb   24b  488bd7         REX.W movq rdx,rdi
+0x2254cef85bce   24e  b802000000     movl rax,0x2
+0x2254cef85bd3   253  e8c8fae7ff     call 0x2254cee056a0  (JSConstructStubGenericUnrestrictedReturn)    ;; code: BUILTIN
+0x2254cef85bd8   258  488b5de8       REX.W movq rbx,[rbp-0x18]
+0x2254cef85bdc   25c  48ba293154e0de330000 REX.W movq rdx,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef85be6   266  483953ff       REX.W cmpq [rbx-0x1],rdx
+0x2254cef85bea   26a  0f8556020000   jnz 0x2254cef85e46  <+0x4c6>
+0x2254cef85bf0   270  483950ff       REX.W cmpq [rax-0x1],rdx
+0x2254cef85bf4   274  0f8551020000   jnz 0x2254cef85e4b  <+0x4cb>
+0x2254cef85bfa   27a  8b501b         movl rdx,[rax+0x1b]
+0x2254cef85bfd   27d  8b4b1b         movl rcx,[rbx+0x1b]
+0x2254cef85c00   280  488bf1         REX.W movq rsi,rcx
+0x2254cef85c03   283  0faff2         imull rsi,rdx
+0x2254cef85c06   286  0f8044020000   jo 0x2254cef85e50  <+0x4d0>
+0x2254cef85c0c   28c  8b7b23         movl rdi,[rbx+0x23]
+0x2254cef85c0f   28f  0fafd7         imull rdx,rdi
+0x2254cef85c12   292  0f803d020000   jo 0x2254cef85e55  <+0x4d5>
+0x2254cef85c18   298  488bfe         REX.W movq rdi,rsi
+0x2254cef85c1b   29b  c1ef10         shrl rdi, 16
+0x2254cef85c1e   29e  03d7           addl rdx,rdi
+0x2254cef85c20   2a0  0f8034020000   jo 0x2254cef85e5a  <+0x4da>
+0x2254cef85c26   2a6  8b7823         movl rdi,[rax+0x23]
+0x2254cef85c29   2a9  0faff9         imull rdi,rcx
+0x2254cef85c2c   2ac  0f802d020000   jo 0x2254cef85e5f  <+0x4df>
+0x2254cef85c32   2b2  0fb7d2         movzxwl rdx,rdx
+0x2254cef85c35   2b5  03fa           addl rdi,rdx
+0x2254cef85c37   2b7  0f8027020000   jo 0x2254cef85e64  <+0x4e4>
+0x2254cef85c3d   2bd  0fb7c6         movzxwl rax,rsi
+0x2254cef85c40   2c0  0fb7d7         movzxwl rdx,rdi
+0x2254cef85c43   2c3  488bc8         REX.W movq rcx,rax
+0x2254cef85c46   2c6  48c1e120       REX.W shlq rcx, 32
+0x2254cef85c4a   2ca  48894b17       REX.W movq [rbx+0x17],rcx
+0x2254cef85c4e   2ce  488bca         REX.W movq rcx,rdx
+0x2254cef85c51   2d1  48c1e120       REX.W shlq rcx, 32
+0x2254cef85c55   2d5  48894b1f       REX.W movq [rbx+0x1f],rcx
+0x2254cef85c59   2d9  69d200000100   imull rdx,rdx,0x10000
+0x2254cef85c5f   2df  0f8004020000   jo 0x2254cef85e69  <+0x4e9>
+0x2254cef85c65   2e5  03c2           addl rax,rdx
+0x2254cef85c67   2e7  0f8001020000   jo 0x2254cef85e6e  <+0x4ee>
+0x2254cef85c6d   2ed  48c1e020       REX.W shlq rax, 32
+0x2254cef85c71   2f1  488be5         REX.W movq rsp,rbp
+0x2254cef85c74   2f4  5d             pop rbp
+0x2254cef85c75   2f5  c21800         ret 0x18
+0x2254cef85c78   2f8  48bb307c0c0100000000 REX.W movq rbx,0x10c7c30
+0x2254cef85c82   302  33c0           xorl rax,rax
+0x2254cef85c84   304  488b75f8       REX.W movq rsi,[rbp-0x8]
+0x2254cef85c88   308  e853e9e7ff     call 0x2254cee045e0     ;; code: STUB, CEntryStub, minor: 8
+0x2254cef85c8d   30d  e905fdffff     jmp 0x2254cef85997  <+0x17>
+0x2254cef85c92   312  80fab4         cmpb dl,0xb4
+0x2254cef85c95   315  0f8271000000   jc 0x2254cef85d0c  <+0x38c>
+0x2254cef85c9b   31b  50             push rax
+0x2254cef85c9c   31c  49bb49b379a532350000 REX.W movq r11,0x3532a579b349    ;; object: 0x3532a579b349 <Object map = 0x33dee0543b79>
+0x2254cef85ca6   326  4153           push r11
+0x2254cef85ca8   328  48bbe07b0d0100000000 REX.W movq rbx,0x10d7be0
+0x2254cef85cb2   332  b802000000     movl rax,0x2
+0x2254cef85cb7   337  48be21b079a532350000 REX.W movq rsi,0x3532a579b021    ;; object: 0x3532a579b021 <FixedArray[8]>
+0x2254cef85cc1   341  e81ae9e7ff     call 0x2254cee045e0     ;; code: STUB, CEntryStub, minor: 8
+0x2254cef85cc6   346  493945b8       REX.W cmpq [r13-0x48],rax
+0x2254cef85cca   34a  0f840f000000   jz 0x2254cef85cdf  <+0x35f>
+0x2254cef85cd0   350  49b871b079a532350000 REX.W movq r8,0x3532a579b071    ;; object: 0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef85cda   35a  e9acfdffff     jmp 0x2254cef85a8b  <+0x10b>
+0x2254cef85cdf   35f  49b9b1bef018c42b0000 REX.W movq r9,0x2bc418f0beb1    ;; object: 0x2bc418f0beb1 <JSGlobal Object>
+0x2254cef85ce9   369  49b871b079a532350000 REX.W movq r8,0x3532a579b071    ;; object: 0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef85cf3   373  48b9c12450e0de330000 REX.W movq rcx,0x33dee05024c1    ;; object: 0x33dee05024c1 <Map(HOLEY_ELEMENTS)>
+0x2254cef85cfd   37d  49bb49b379a532350000 REX.W movq r11,0x3532a579b349    ;; object: 0x3532a579b349 <Object map = 0x33dee0543b79>
+0x2254cef85d07   387  e9e8fcffff     jmp 0x2254cef859f4  <+0x74>
+0x2254cef85d0c   38c  49bb49b379a532350000 REX.W movq r11,0x3532a579b349    ;; object: 0x3532a579b349 <Object map = 0x33dee0543b79>
+0x2254cef85d16   396  49be293154e0de330000 REX.W movq r14,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef85d20   3a0  49b9b1bef018c42b0000 REX.W movq r9,0x2bc418f0beb1    ;; object: 0x2bc418f0beb1 <JSGlobal Object>
+0x2254cef85d2a   3aa  49b871b079a532350000 REX.W movq r8,0x3532a579b071    ;; object: 0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef85d34   3b4  48b9c12450e0de330000 REX.W movq rcx,0x33dee05024c1    ;; object: 0x33dee05024c1 <Map(HOLEY_ELEMENTS)>
+0x2254cef85d3e   3be  48ba01b179a532350000 REX.W movq rdx,0x3532a579b101    ;; object: 0x3532a579b101 <JSFunction fromNumber (sfi = 0x1be8c20d2ff9)>
+0x2254cef85d48   3c8  4d8b7db0       REX.W movq r15,[r13-0x50]
+0x2254cef85d4c   3cc  49bcc92f54e0de330000 REX.W movq r12,0x33dee0542fc9    ;; object: 0x33dee0542fc9 <Map(HOLEY_ELEMENTS)>
+0x2254cef85d56   3d6  e930fdffff     jmp 0x2254cef85a8b  <+0x10b>
+0x2254cef85d5b   3db  4080feb4       cmpb sil,0xb4
+0x2254cef85d5f   3df  0f8252000000   jc 0x2254cef85db7  <+0x437>
+0x2254cef85d65   3e5  53             push rbx
+0x2254cef85d66   3e6  48ba49b379a532350000 REX.W movq rdx,0x3532a579b349    ;; object: 0x3532a579b349 <Object map = 0x33dee0543b79>
+0x2254cef85d70   3f0  52             push rdx
+0x2254cef85d71   3f1  48bbe07b0d0100000000 REX.W movq rbx,0x10d7be0
+0x2254cef85d7b   3fb  b802000000     movl rax,0x2
+0x2254cef85d80   400  48be21b079a532350000 REX.W movq rsi,0x3532a579b021    ;; object: 0x3532a579b021 <FixedArray[8]>
+0x2254cef85d8a   40a  e851e8e7ff     call 0x2254cee045e0     ;; code: STUB, CEntryStub, minor: 8
+0x2254cef85d8f   40f  493945b8       REX.W cmpq [r13-0x48],rax
+0x2254cef85d93   413  0f840f000000   jz 0x2254cef85da8  <+0x428>
+0x2254cef85d99   419  48bf71b079a532350000 REX.W movq rdi,0x3532a579b071    ;; object: 0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef85da3   423  e90dfeffff     jmp 0x2254cef85bb5  <+0x235>
+0x2254cef85da8   428  48b8c12450e0de330000 REX.W movq rax,0x33dee05024c1    ;; object: 0x33dee05024c1 <Map(HOLEY_ELEMENTS)>
+0x2254cef85db2   432  e95efdffff     jmp 0x2254cef85b15  <+0x195>
+0x2254cef85db7   437  48bf71b079a532350000 REX.W movq rdi,0x3532a579b071    ;; object: 0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef85dc1   441  49be293154e0de330000 REX.W movq r14,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef85dcb   44b  e9e5fdffff     jmp 0x2254cef85bb5  <+0x235>
+0x2254cef85dd0   450  48c7c10000f8ff REX.W movq rcx,0xfff80000
+0x2254cef85dd7   457  4923ce         REX.W andq rcx,r14
+0x2254cef85dda   45a  f6410802       testb [rcx+0x8],0x2
+0x2254cef85dde   45e  0f8481fdffff   jz 0x2254cef85b65  <+0x1e5>
+0x2254cef85de4   464  488d53ff       REX.W leaq rdx,[rbx-0x1]
+0x2254cef85de8   468  e8d3f7ffff     call 0x2254cef855c0     ;; code: STUB, RecordWriteStub, minor: 12819
+0x2254cef85ded   46d  e973fdffff     jmp 0x2254cef85b65  <+0x1e5>
+0x2254cef85df2   472  48c7c30000f8ff REX.W movq rbx,0xfff80000
+0x2254cef85df9   479  4923de         REX.W andq rbx,r14
+0x2254cef85dfc   47c  f6430802       testb [rbx+0x8],0x2
+0x2254cef85e00   480  0f8434fcffff   jz 0x2254cef85a3a  <+0xba>
+0x2254cef85e06   486  498d41ff       REX.W leaq rax,[r9-0x1]
+0x2254cef85e0a   48a  e8f1f3ffff     call 0x2254cef85200     ;; code: STUB, RecordWriteStub, minor: 12345
+0x2254cef85e0f   48f  e926fcffff     jmp 0x2254cef85a3a  <+0xba>
+0x2254cef85e14   494  e8e7e1cfff     call 0x2254cec84000     ;; deoptimization bailout 0
+0x2254cef85e19   499  e8ece1cfff     call 0x2254cec8400a     ;; deoptimization bailout 1
+0x2254cef85e1e   49e  e8f1e1cfff     call 0x2254cec84014     ;; deoptimization bailout 2
+0x2254cef85e23   4a3  e8f6e1cfff     call 0x2254cec8401e     ;; deoptimization bailout 3
+0x2254cef85e28   4a8  e8fbe1cfff     call 0x2254cec84028     ;; deoptimization bailout 4
+0x2254cef85e2d   4ad  e800e2cfff     call 0x2254cec84032     ;; deoptimization bailout 5
+0x2254cef85e32   4b2  e805e2cfff     call 0x2254cec8403c     ;; deoptimization bailout 6
+0x2254cef85e37   4b7  e80ae2cfff     call 0x2254cec84046     ;; deoptimization bailout 7
+0x2254cef85e3c   4bc  e80fe2cfff     call 0x2254cec84050     ;; deoptimization bailout 8
+0x2254cef85e41   4c1  e814e2cfff     call 0x2254cec8405a     ;; deoptimization bailout 9
+0x2254cef85e46   4c6  e819e2cfff     call 0x2254cec84064     ;; deoptimization bailout 10
+0x2254cef85e4b   4cb  e81ee2cfff     call 0x2254cec8406e     ;; deoptimization bailout 11
+0x2254cef85e50   4d0  e823e2cfff     call 0x2254cec84078     ;; deoptimization bailout 12
+0x2254cef85e55   4d5  e828e2cfff     call 0x2254cec84082     ;; deoptimization bailout 13
+0x2254cef85e5a   4da  e82de2cfff     call 0x2254cec8408c     ;; deoptimization bailout 14
+0x2254cef85e5f   4df  e832e2cfff     call 0x2254cec84096     ;; deoptimization bailout 15
+0x2254cef85e64   4e4  e837e2cfff     call 0x2254cec840a0     ;; deoptimization bailout 16
+0x2254cef85e69   4e9  e83ce2cfff     call 0x2254cec840aa     ;; deoptimization bailout 17
+0x2254cef85e6e   4ee  e841e2cfff     call 0x2254cec840b4     ;; deoptimization bailout 18
+0x2254cef85e73   4f3  e846e2cfff     call 0x2254cec840be     ;; deoptimization bailout 19
+0x2254cef85e78   4f8  e84be2cfff     call 0x2254cec840c8     ;; deoptimization bailout 20
+0x2254cef85e7d   4fd  e850e2cfff     call 0x2254cec840d2     ;; deoptimization bailout 21
+0x2254cef85e82   502  90             nop
+0x2254cef85e83   503  90             nop
+0x2254cef85e84   504  90             nop
+0x2254cef85e85   505  90             nop
+0x2254cef85e86   506  90             nop
+0x2254cef85e87   507  90             nop
+0x2254cef85e88   508  90             nop
+0x2254cef85e89   509  90             nop
+0x2254cef85e8a   50a  90             nop
+0x2254cef85e8b   50b  90             nop
+0x2254cef85e8c   50c  90             nop
+0x2254cef85e8d   50d  90             nop
+0x2254cef85e8e   50e  90             nop
+0x2254cef85e8f   50f  90             nop
+
+Source positions:
+ pc offset  position
+       116       801
+       241       801
+       2f8       219
+
+Inlined functions (count = 4)
+ 0x1be8c20d3189 <SharedFunctionInfo UINT32.toNumber>
+ 0x1be8c20d34a9 <SharedFunctionInfo UINT32.multiply>
+ 0x1be8c20d2e69 <SharedFunctionInfo UINT32>
+ 0x1be8c20d2ff9 <SharedFunctionInfo fromNumber>
+
+Deoptimization Input Data (deopt points = 22)
+ index  bytecode-offset  trampoline_pc     pc
+     0                0            494     NA 
+     1               26            499     NA 
+     2               50            49e     NA 
+     3               50            4a3     NA 
+     4               19            4a8    130 
+     5               19            4ad     NA 
+     6               26            4b2     NA 
+     7               50            4b7     NA 
+     8               50            4bc     NA 
+     9               19            4c1    258 
+    10               25            4c6     NA 
+    11               25            4cb     NA 
+    12               25            4d0     NA 
+    13               25            4d5     NA 
+    14               25            4da     NA 
+    15               25            4df     NA 
+    16               25            4e4     NA 
+    17               38            4e9     NA 
+    18               38            4ee     NA 
+    19                0            4f3    30d 
+    20              127            4f8    346 
+    21              127            4fd    40f 
+
+Safepoints (size = 63)
+0x2254cef85ab0   130  00000 (sp -> fp)       4
+0x2254cef85bd8   258  10000 (sp -> fp)       9
+0x2254cef85c8d   30d  00000 (sp -> fp)      19
+0x2254cef85cc6   346  00000 (sp -> fp)      20
+0x2254cef85d8f   40f  10000 (sp -> fp)      21
+
+RelocInfo (size = 95)
+0x2254cef85999  embedded object  (0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef859a3  embedded object  (0x33dee05024c1 <Map(HOLEY_ELEMENTS)>)
+0x2254cef859b7  embedded object  (0x3532a579b349 <Object map = 0x33dee0543b79>)
+0x2254cef859c1  embedded object  (0x2bc418f0beb1 <JSGlobal Object>)
+0x2254cef859f6  embedded object  (0x33dee0542fc9 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85a1a  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85a4f  embedded object  (0x3532a579b101 <JSFunction fromNumber (sfi = 0x1be8c20d2ff9)>)
+0x2254cef85a98  embedded object  (0x3532a579b021 <FixedArray[8]>)
+0x2254cef85aac  code target (BUILTIN)  (0x2254cee056a0)
+0x2254cef85ab6  embedded object  (0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef85ac0  embedded object  (0x33dee05024c1 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85ad4  embedded object  (0x2bc418f0beb1 <JSGlobal Object>)
+0x2254cef85ade  embedded object  (0x3532a579b349 <Object map = 0x33dee0543b79>)
+0x2254cef85b17  embedded object  (0x2bc418f0beb1 <JSGlobal Object>)
+0x2254cef85b21  embedded object  (0x33dee0542fc9 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85b45  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85b7a  embedded object  (0x3532a579b101 <JSFunction fromNumber (sfi = 0x1be8c20d2ff9)>)
+0x2254cef85bc3  embedded object  (0x3532a579b021 <FixedArray[8]>)
+0x2254cef85bd4  code target (BUILTIN)  (0x2254cee056a0)
+0x2254cef85bde  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85c89  code target (STUB)  (0x2254cee045e0)
+0x2254cef85c9e  embedded object  (0x3532a579b349 <Object map = 0x33dee0543b79>)
+0x2254cef85cb9  embedded object  (0x3532a579b021 <FixedArray[8]>)
+0x2254cef85cc2  code target (STUB)  (0x2254cee045e0)
+0x2254cef85cd2  embedded object  (0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef85ce1  embedded object  (0x2bc418f0beb1 <JSGlobal Object>)
+0x2254cef85ceb  embedded object  (0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef85cf5  embedded object  (0x33dee05024c1 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85cff  embedded object  (0x3532a579b349 <Object map = 0x33dee0543b79>)
+0x2254cef85d0e  embedded object  (0x3532a579b349 <Object map = 0x33dee0543b79>)
+0x2254cef85d18  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85d22  embedded object  (0x2bc418f0beb1 <JSGlobal Object>)
+0x2254cef85d2c  embedded object  (0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef85d36  embedded object  (0x33dee05024c1 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85d40  embedded object  (0x3532a579b101 <JSFunction fromNumber (sfi = 0x1be8c20d2ff9)>)
+0x2254cef85d4e  embedded object  (0x33dee0542fc9 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85d68  embedded object  (0x3532a579b349 <Object map = 0x33dee0543b79>)
+0x2254cef85d82  embedded object  (0x3532a579b021 <FixedArray[8]>)
+0x2254cef85d8b  code target (STUB)  (0x2254cee045e0)
+0x2254cef85d9b  embedded object  (0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef85daa  embedded object  (0x33dee05024c1 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85db9  embedded object  (0x3532a579b071 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef85dc3  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef85de9  code target (STUB)  (0x2254cef855c0)
+0x2254cef85e0b  code target (STUB)  (0x2254cef85200)
+0x2254cef85e15  runtime entry  (deoptimization bailout 0)
+0x2254cef85e1a  runtime entry  (deoptimization bailout 1)
+0x2254cef85e1f  runtime entry  (deoptimization bailout 2)
+0x2254cef85e24  runtime entry  (deoptimization bailout 3)
+0x2254cef85e29  runtime entry  (deoptimization bailout 4)
+0x2254cef85e2e  runtime entry  (deoptimization bailout 5)
+0x2254cef85e33  runtime entry  (deoptimization bailout 6)
+0x2254cef85e38  runtime entry  (deoptimization bailout 7)
+0x2254cef85e3d  runtime entry  (deoptimization bailout 8)
+0x2254cef85e42  runtime entry  (deoptimization bailout 9)
+0x2254cef85e47  runtime entry  (deoptimization bailout 10)
+0x2254cef85e4c  runtime entry  (deoptimization bailout 11)
+0x2254cef85e51  runtime entry  (deoptimization bailout 12)
+0x2254cef85e56  runtime entry  (deoptimization bailout 13)
+0x2254cef85e5b  runtime entry  (deoptimization bailout 14)
+0x2254cef85e60  runtime entry  (deoptimization bailout 15)
+0x2254cef85e65  runtime entry  (deoptimization bailout 16)
+0x2254cef85e6a  runtime entry  (deoptimization bailout 17)
+0x2254cef85e6f  runtime entry  (deoptimization bailout 18)
+0x2254cef85e74  runtime entry  (deoptimization bailout 19)
+0x2254cef85e79  runtime entry  (deoptimization bailout 20)
+0x2254cef85e7e  runtime entry  (deoptimization bailout 21)
+
+--- End code ---
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/node_modules/cuint/lib/uint32.js:UINT32) id{3,-1} start{747} ---
+(l, h) {
+		if ( !(this instanceof UINT32) )
+			return new UINT32(l, h)
+
+		this._low = 0
+		this._high = 0
+		this.remainder = null
+		if (typeof h == 'undefined')
+			return fromNumber.call(this, l)
+
+		if (typeof l == 'string')
+			return fromString.call(this, l, h)
+
+		fromBits.call(this, l, h)
+	}
+--- END ---
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/node_modules/cuint/lib/uint32.js:fromNumber) id{3,0} start{1506} ---
+(value) {
+		this._low = value & 0xFFFF
+		this._high = value >>> 16
+
+		return this
+	}
+--- END ---
+INLINE (fromNumber) id{3,0} AS 0 AT <-1:928>
+--- Raw source ---
+(l, h) {
+		if ( !(this instanceof UINT32) )
+			return new UINT32(l, h)
+
+		this._low = 0
+		this._high = 0
+		this.remainder = null
+		if (typeof h == 'undefined')
+			return fromNumber.call(this, l)
+
+		if (typeof l == 'string')
+			return fromString.call(this, l, h)
+
+		fromBits.call(this, l, h)
+	}
+
+
+--- Optimized code ---
+optimization_id = 3
+source_position = 747
+kind = OPTIMIZED_FUNCTION
+name = UINT32
+stack_slots = 4
+compiler = turbofan
+Instructions (size = 649)
+0x2254cef86320     0  55             push rbp
+0x2254cef86321     1  4889e5         REX.W movq rbp,rsp
+0x2254cef86324     4  56             push rsi
+0x2254cef86325     5  57             push rdi
+0x2254cef86326     6  493ba5e80c0000 REX.W cmpq rsp,[r13+0xce8]
+0x2254cef8632d     d  0f866c010000   jna 0x2254cef8649f  <+0x17f>
+0x2254cef86333    13  48bf11281042861a0000 REX.W movq rdi,0x1a8642102811    ;; object: 0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef8633d    1d  48b8c12450e0de330000 REX.W movq rax,0x33dee05024c1    ;; object: 0x33dee05024c1 <Map(HOLEY_ELEMENTS)>
+0x2254cef86347    27  483947ff       REX.W cmpq [rdi-0x1],rax
+0x2254cef8634b    2b  0f85ff010000   jnz 0x2254cef86550  <+0x230>
+0x2254cef86351    31  488b5d20       REX.W movq rbx,[rbp+0x20]
+0x2254cef86355    35  48ba512d1042861a0000 REX.W movq rdx,0x1a8642102d51    ;; object: 0x1a8642102d51 <Object map = 0x33dee0543b79>
+0x2254cef8635f    3f  90             nop
+0x2254cef86360    40  488b4bff       REX.W movq rcx,[rbx-0x1]
+0x2254cef86364    44  0fb6710b       movzxbl rsi,[rcx+0xb]
+0x2254cef86368    48  4080feb7       cmpb sil,0xb7
+0x2254cef8636c    4c  0f8647010000   jna 0x2254cef864b9  <+0x199>
+0x2254cef86372    52  488b5917       REX.W movq rbx,[rcx+0x17]
+0x2254cef86376    56  49395db0       REX.W cmpq [r13-0x50],rbx
+0x2254cef8637a    5a  0f84fb000000   jz 0x2254cef8647b  <+0x15b>
+0x2254cef86380    60  483bda         REX.W cmpq rbx,rdx
+0x2254cef86383    63  75db           jnz 0x2254cef86360  <+0x40>
+0x2254cef86385    65  488b4d20       REX.W movq rcx,[rbp+0x20]
+0x2254cef86389    69  48bbc92f54e0de330000 REX.W movq rbx,0x33dee0542fc9    ;; object: 0x33dee0542fc9 <Map(HOLEY_ELEMENTS)>
+0x2254cef86393    73  483959ff       REX.W cmpq [rcx-0x1],rbx
+0x2254cef86397    77  0f85b8010000   jnz 0x2254cef86555  <+0x235>
+0x2254cef8639d    7d  48c7411700000000 REX.W movq [rcx+0x17],0x0
+0x2254cef863a5    85  48c7411f00000000 REX.W movq [rcx+0x1f],0x0
+0x2254cef863ad    8d  48bb293154e0de330000 REX.W movq rbx,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef863b7    97  488959ff       REX.W movq [rcx-0x1],rbx
+0x2254cef863bb    9b  48c7c60000f8ff REX.W movq rsi,0xfff80000
+0x2254cef863c2    a2  4823f1         REX.W andq rsi,rcx
+0x2254cef863c5    a5  f6460804       testb [rsi+0x8],0x4
+0x2254cef863c9    a9  0f855f010000   jnz 0x2254cef8652e  <+0x20e>
+0x2254cef863cf    af  498b5db0       REX.W movq rbx,[r13-0x50]
+0x2254cef863d3    b3  48895927       REX.W movq [rcx+0x27],rbx
+0x2254cef863d7    b7  4c8b4510       REX.W movq r8,[rbp+0x10]
+0x2254cef863db    bb  41f6c001       testb r8,0x1
+0x2254cef863df    bf  0f842a010000   jz 0x2254cef8650f  <+0x1ef>
+0x2254cef863e5    c5  498b58ff       REX.W movq rbx,[r8-0x1]
+0x2254cef863e9    c9  f6430c10       testb [rbx+0xc],0x10
+0x2254cef863ed    cd  0f95c3         setnzl bl
+0x2254cef863f0    d0  0fb6db         movzxbl rbx,rbx
+0x2254cef863f3    d3  4d3945b0       REX.W cmpq [r13-0x50],r8
+0x2254cef863f7    d7  0f8502000000   jnz 0x2254cef863ff  <+0xdf>
+0x2254cef863fd    dd  33db           xorl rbx,rbx
+0x2254cef863ff    df  4c8b4d18       REX.W movq r9,[rbp+0x18]
+0x2254cef86403    e3  41f6c101       testb r9,0x1
+0x2254cef86407    e7  0f94c2         setzl dl
+0x2254cef8640a    ea  0fb6d2         movzxbl rdx,rdx
+0x2254cef8640d    ed  83fb00         cmpl rbx,0x0
+0x2254cef86410    f0  0f8521000000   jnz 0x2254cef86437  <+0x117>
+0x2254cef86416    f6  83fa00         cmpl rdx,0x0
+0x2254cef86419    f9  0f8513000000   jnz 0x2254cef86432  <+0x112>
+0x2254cef8641f    ff  498b41ff       REX.W movq rax,[r9-0x1]
+0x2254cef86423   103  80780b80       cmpb [rax+0xb],0x80
+0x2254cef86427   107  0f8305000000   jnc 0x2254cef86432  <+0x112>
+0x2254cef8642d   10d  e8e2dbdfff     call 0x2254ced84014     ;; soft deoptimization bailout 2
+0x2254cef86432   112  e8e7dbdfff     call 0x2254ced8401e     ;; soft deoptimization bailout 3
+0x2254cef86437   117  498bd9         REX.W movq rbx,r9
+0x2254cef8643a   11a  48c1eb20       REX.W shrq rbx, 32
+0x2254cef8643e   11e  0fb7f3         movzxwl rsi,rbx
+0x2254cef86441   121  48bfe1301042861a0000 REX.W movq rdi,0x1a86421030e1    ;; object: 0x1a86421030e1 <JSFunction fromNumber (sfi = 0x1be8c20d2ff9)>
+0x2254cef8644b   12b  483947ff       REX.W cmpq [rdi-0x1],rax
+0x2254cef8644f   12f  0f8505010000   jnz 0x2254cef8655a  <+0x23a>
+0x2254cef86455   135  c1eb10         shrl rbx, 16
+0x2254cef86458   138  83fa00         cmpl rdx,0x0
+0x2254cef8645b   13b  0f84fe000000   jz 0x2254cef8655f  <+0x23f>
+0x2254cef86461   141  48c1e620       REX.W shlq rsi, 32
+0x2254cef86465   145  48897117       REX.W movq [rcx+0x17],rsi
+0x2254cef86469   149  48c1e320       REX.W shlq rbx, 32
+0x2254cef8646d   14d  4889591f       REX.W movq [rcx+0x1f],rbx
+0x2254cef86471   151  488bc1         REX.W movq rax,rcx
+0x2254cef86474   154  488be5         REX.W movq rsp,rbp
+0x2254cef86477   157  5d             pop rbp
+0x2254cef86478   158  c21800         ret 0x18
+0x2254cef8647b   15b  498b5da0       REX.W movq rbx,[r13-0x60]
+0x2254cef8647f   15f  53             push rbx
+0x2254cef86480   160  4c8b4d18       REX.W movq r9,[rbp+0x18]
+0x2254cef86484   164  4151           push r9
+0x2254cef86486   166  4c8b4510       REX.W movq r8,[rbp+0x10]
+0x2254cef8648a   16a  4150           push r8
+0x2254cef8648c   16c  b802000000     movl rax,0x2
+0x2254cef86491   171  488bd7         REX.W movq rdx,rdi
+0x2254cef86494   174  488b75f8       REX.W movq rsi,[rbp-0x8]
+0x2254cef86498   178  e803f2e7ff     call 0x2254cee056a0  (JSConstructStubGenericUnrestrictedReturn)    ;; code: BUILTIN
+0x2254cef8649d   17d  ebd5           jmp 0x2254cef86474  <+0x154>
+0x2254cef8649f   17f  48bb307c0c0100000000 REX.W movq rbx,0x10c7c30
+0x2254cef864a9   189  33c0           xorl rax,rax
+0x2254cef864ab   18b  488b75f8       REX.W movq rsi,[rbp-0x8]
+0x2254cef864af   18f  e82ce1e7ff     call 0x2254cee045e0     ;; code: STUB, CEntryStub, minor: 8
+0x2254cef864b4   194  e97afeffff     jmp 0x2254cef86333  <+0x13>
+0x2254cef864b9   199  4080feb4       cmpb sil,0xb4
+0x2254cef864bd   19d  0f8258000000   jc 0x2254cef8651b  <+0x1fb>
+0x2254cef864c3   1a3  53             push rbx
+0x2254cef864c4   1a4  48ba512d1042861a0000 REX.W movq rdx,0x1a8642102d51    ;; object: 0x1a8642102d51 <Object map = 0x33dee0543b79>
+0x2254cef864ce   1ae  52             push rdx
+0x2254cef864cf   1af  48bbe07b0d0100000000 REX.W movq rbx,0x10d7be0
+0x2254cef864d9   1b9  b802000000     movl rax,0x2
+0x2254cef864de   1be  488b75f8       REX.W movq rsi,[rbp-0x8]
+0x2254cef864e2   1c2  e8f9e0e7ff     call 0x2254cee045e0     ;; code: STUB, CEntryStub, minor: 8
+0x2254cef864e7   1c7  493945b8       REX.W cmpq [r13-0x48],rax
+0x2254cef864eb   1cb  0f840f000000   jz 0x2254cef86500  <+0x1e0>
+0x2254cef864f1   1d1  48bf11281042861a0000 REX.W movq rdi,0x1a8642102811    ;; object: 0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef864fb   1db  e97bffffff     jmp 0x2254cef8647b  <+0x15b>
+0x2254cef86500   1e0  48b8c12450e0de330000 REX.W movq rax,0x33dee05024c1    ;; object: 0x33dee05024c1 <Map(HOLEY_ELEMENTS)>
+0x2254cef8650a   1ea  e976feffff     jmp 0x2254cef86385  <+0x65>
+0x2254cef8650f   1ef  33db           xorl rbx,rbx
+0x2254cef86511   1f1  e9ddfeffff     jmp 0x2254cef863f3  <+0xd3>
+0x2254cef86516   1f6  e917ffffff     jmp 0x2254cef86432  <+0x112>
+0x2254cef8651b   1fb  488b4d20       REX.W movq rcx,[rbp+0x20]
+0x2254cef8651f   1ff  48bf11281042861a0000 REX.W movq rdi,0x1a8642102811    ;; object: 0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef86529   209  e94dffffff     jmp 0x2254cef8647b  <+0x15b>
+0x2254cef8652e   20e  48c7c60000f8ff REX.W movq rsi,0xfff80000
+0x2254cef86535   215  4823f3         REX.W andq rsi,rbx
+0x2254cef86538   218  f6460802       testb [rsi+0x8],0x2
+0x2254cef8653c   21c  0f848dfeffff   jz 0x2254cef863cf  <+0xaf>
+0x2254cef86542   222  488d51ff       REX.W leaq rdx,[rcx-0x1]
+0x2254cef86546   226  e8f5f9ffff     call 0x2254cef85f40     ;; code: STUB, RecordWriteStub, minor: 12897
+0x2254cef8654b   22b  e97ffeffff     jmp 0x2254cef863cf  <+0xaf>
+0x2254cef86550   230  e8abdacfff     call 0x2254cec84000     ;; deoptimization bailout 0
+0x2254cef86555   235  e8b0dacfff     call 0x2254cec8400a     ;; deoptimization bailout 1
+0x2254cef8655a   23a  e8c9dacfff     call 0x2254cec84028     ;; deoptimization bailout 4
+0x2254cef8655f   23f  e8cedacfff     call 0x2254cec84032     ;; deoptimization bailout 5
+0x2254cef86564   244  e8d3dacfff     call 0x2254cec8403c     ;; deoptimization bailout 6
+0x2254cef86569   249  e8d8dacfff     call 0x2254cec84046     ;; deoptimization bailout 7
+0x2254cef8656e   24e  e8dddacfff     call 0x2254cec84050     ;; deoptimization bailout 8
+0x2254cef86573   253  90             nop
+0x2254cef86574   254  90             nop
+0x2254cef86575   255  90             nop
+0x2254cef86576   256  90             nop
+0x2254cef86577   257  90             nop
+0x2254cef86578   258  90             nop
+0x2254cef86579   259  90             nop
+0x2254cef8657a   25a  90             nop
+0x2254cef8657b   25b  90             nop
+0x2254cef8657c   25c  90             nop
+0x2254cef8657d   25d  90             nop
+0x2254cef8657e   25e  90             nop
+0x2254cef8657f   25f  90             nop
+
+Source positions:
+ pc offset  position
+       16c       801
+       17f       747
+
+Inlined functions (count = 1)
+ 0x1be8c20d2ff9 <SharedFunctionInfo fromNumber>
+
+Deoptimization Input Data (deopt points = 9)
+ index  bytecode-offset  trampoline_pc     pc
+     0                0            230     NA 
+     1               26            235     NA 
+     2               73             NA     NA 
+     3               98             NA     NA 
+     4               50            23a     NA 
+     5               50            23f     NA 
+     6               19            244    17d 
+     7                0            249    194 
+     8              127            24e    1c7 
+
+Safepoints (size = 41)
+0x2254cef8649d   17d  0000 (sp -> fp)       6
+0x2254cef864b4   194  0000 (sp -> fp)       7
+0x2254cef864e7   1c7  0000 (sp -> fp)       8
+
+RelocInfo (size = 36)
+0x2254cef86335  embedded object  (0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef8633f  embedded object  (0x33dee05024c1 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86357  embedded object  (0x1a8642102d51 <Object map = 0x33dee0543b79>)
+0x2254cef8638b  embedded object  (0x33dee0542fc9 <Map(HOLEY_ELEMENTS)>)
+0x2254cef863af  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef8642e  runtime entry
+0x2254cef86433  runtime entry
+0x2254cef86443  embedded object  (0x1a86421030e1 <JSFunction fromNumber (sfi = 0x1be8c20d2ff9)>)
+0x2254cef86499  code target (BUILTIN)  (0x2254cee056a0)
+0x2254cef864b0  code target (STUB)  (0x2254cee045e0)
+0x2254cef864c6  embedded object  (0x1a8642102d51 <Object map = 0x33dee0543b79>)
+0x2254cef864e3  code target (STUB)  (0x2254cee045e0)
+0x2254cef864f3  embedded object  (0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef86502  embedded object  (0x33dee05024c1 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86521  embedded object  (0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef86547  code target (STUB)  (0x2254cef85f40)
+0x2254cef86551  runtime entry  (deoptimization bailout 0)
+0x2254cef86556  runtime entry  (deoptimization bailout 1)
+0x2254cef8655b  runtime entry  (deoptimization bailout 4)
+0x2254cef86560  runtime entry  (deoptimization bailout 5)
+0x2254cef86565  runtime entry  (deoptimization bailout 6)
+0x2254cef8656a  runtime entry  (deoptimization bailout 7)
+0x2254cef8656f  runtime entry  (deoptimization bailout 8)
+
+--- End code ---
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/bin/multiply-many.js:) id{4,-1} start{10} ---
+(exports, require, module, __filename, __dirname) { 'use strict';
+
+const multiply = require('../lib/multiply.js')
+
+let total = 0
+
+for (let i = 0; i < 1000000; i++) {
+	total += multiply.multiplyUint32(total, i)
+}
+
+console.log('many: %s', total)
+
+
+}
+--- END ---
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/lib/multiply.js:multiplyUint32) id{4,0} start{219} ---
+(a, b) {
+  const first = uint32(a)
+  const second = uint32(b)
+  return first.multiply(second).toNumber()
+}
+--- END ---
+INLINE (multiplyUint32) id{4,0} AS 0 AT <-1:195>
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/node_modules/cuint/lib/uint32.js:UINT32.toNumber) id{4,1} start{2174} ---
+() {
+		return (this._high * 65536) + this._low
+	}
+--- END ---
+INLINE (UINT32.toNumber) id{4,1} AS 1 AT <0:313>
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/node_modules/cuint/lib/uint32.js:UINT32.multiply) id{4,2} start{3306} ---
+(other) {
+		/*
+			a = a00 + a16
+			b = b00 + b16
+			a*b = (a00 + a16)(b00 + b16)
+				= a00b00 + a00b16 + a16b00 + a16b16
+
+			a16b16 overflows the 32bits
+		 */
+		var a16 = this._high
+		var a00 = this._low
+		var b16 = other._high
+		var b00 = other._low
+
+/* Removed to increase speed under normal circumstances (i.e. not multiplying by 0 or 1)
+		// this == 0 or other == 1: nothing to do
+		if ((a00 == 0 && a16 == 0) || (b00 == 1 && b16 == 0)) return this
+
+		// other == 0 or this == 1: this = other
+		if ((b00 == 0 && b16 == 0) || (a00 == 1 && a16 == 0)) {
+			this._low = other._low
+			this._high = other._high
+			return this
+		}
+*/
+
+		var c16, c00
+		c00 = a00 * b00
+		c16 = c00 >>> 16
+
+		c16 += a16 * b00
+		c16 &= 0xFFFF		// Not required but improves performance
+		c16 += a00 * b16
+
+		this._low = c00 & 0xFFFF
+		this._high = c16 & 0xFFFF
+
+		return this
+	}
+--- END ---
+INLINE (UINT32.multiply) id{4,2} AS 2 AT <0:296>
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/node_modules/cuint/lib/uint32.js:UINT32) id{4,3} start{747} ---
+(l, h) {
+		if ( !(this instanceof UINT32) )
+			return new UINT32(l, h)
+
+		this._low = 0
+		this._high = 0
+		this.remainder = null
+		if (typeof h == 'undefined')
+			return fromNumber.call(this, l)
+
+		if (typeof l == 'string')
+			return fromString.call(this, l, h)
+
+		fromBits.call(this, l, h)
+	}
+--- END ---
+INLINE (UINT32) id{4,3} AS 3 AT <0:271>
+INLINE (UINT32) id{4,3} AS 4 AT <0:244>
+--- FUNCTION SOURCE (/home/alex/projects/building-efficient-software/node_modules/cuint/lib/uint32.js:fromNumber) id{4,4} start{1506} ---
+(value) {
+		this._low = value & 0xFFFF
+		this._high = value >>> 16
+
+		return this
+	}
+--- END ---
+INLINE (fromNumber) id{4,4} AS 5 AT <4:928>
+INLINE (fromNumber) id{4,4} AS 6 AT <3:928>
+--- Raw source ---
+(exports, require, module, __filename, __dirname) { 'use strict';
+
+const multiply = require('../lib/multiply.js')
+
+let total = 0
+
+for (let i = 0; i < 1000000; i++) {
+	total += multiply.multiplyUint32(total, i)
+}
+
+console.log('many: %s', total)
+
+
+})
+
+--- Optimized code ---
+optimization_id = 4
+source_position = 10
+kind = OPTIMIZED_FUNCTION
+stack_slots = 21
+compiler = turbofan
+Instructions (size = 1730)
+0x2254cef869e0     0  55             push rbp
+0x2254cef869e1     1  4889e5         REX.W movq rbp,rsp
+0x2254cef869e4     4  56             push rsi
+0x2254cef869e5     5  57             push rdi
+0x2254cef869e6     6  48ba00000000c5000000 REX.W movq rdx,0xc500000000
+0x2254cef869f0    10  e84bcae8ff     call 0x2254cee13440  (Abort)    ;; code: BUILTIN
+0x2254cef869f5    15  cc             int3l
+0x2254cef869f6    16  4883ec40       REX.W subq rsp,0x40
+0x2254cef869fa    1a  488975a0       REX.W movq [rbp-0x60],rsi
+0x2254cef869fe    1e  4c8b55c0       REX.W movq r10,[rbp-0x40]
+0x2254cef86a02    22  4c895598       REX.W movq [rbp-0x68],r10
+0x2254cef86a06    26  488b4dd0       REX.W movq rcx,[rbp-0x30]
+0x2254cef86a0a    2a  660f1f440000   nop
+0x2254cef86a10    30  4c8b45c8       REX.W movq r8,[rbp-0x38]
+0x2254cef86a14    34  f6c101         testb rcx,0x1
+0x2254cef86a17    37  0f858f050000   jnz 0x2254cef86fac  <+0x5cc>
+0x2254cef86a1d    3d  49b90000000040420f00 REX.W movq r9,0xf424000000000
+0x2254cef86a27    47  48894d88       REX.W movq [rbp-0x78],rcx
+0x2254cef86a2b    4b  493bc9         REX.W cmpq rcx,r9
+0x2254cef86a2e    4e  0f8d74030000   jge 0x2254cef86da8  <+0x3c8>
+0x2254cef86a34    54  493ba5e80c0000 REX.W cmpq rsp,[r13+0xce8]
+0x2254cef86a3b    5b  0f8689030000   jna 0x2254cef86dca  <+0x3ea>
+0x2254cef86a41    61  41f6c001       testb r8,0x1
+0x2254cef86a45    65  0f8466050000   jz 0x2254cef86fb1  <+0x5d1>
+0x2254cef86a4b    6b  48b8e94954e0de330000 REX.W movq rax,0x33dee05449e9    ;; object: 0x33dee05449e9 <Map(HOLEY_ELEMENTS)>
+0x2254cef86a55    75  493940ff       REX.W cmpq [r8-0x1],rax
+0x2254cef86a59    79  0f8557050000   jnz 0x2254cef86fb6  <+0x5d6>
+0x2254cef86a5f    7f  4d8b5817       REX.W movq r11,[r8+0x17]
+0x2254cef86a63    83  4c8b6598       REX.W movq r12,[rbp-0x68]
+0x2254cef86a67    87  49c1ec20       REX.W shrq r12, 32
+0x2254cef86a6b    8b  4c8b7598       REX.W movq r14,[rbp-0x68]
+0x2254cef86a6f    8f  41f6c601       testb r14,0x1
+0x2254cef86a73    93  410f94c7       setzl r15l
+0x2254cef86a77    97  450fb6ff       movzxbl r15,r15
+0x2254cef86a7b    9b  48b859281042861a0000 REX.W movq rax,0x1a8642102859    ;; object: 0x1a8642102859 <JSFunction multiplyUint32 (sfi = 0x1be8c20cf5d1)>
+0x2254cef86a85    a5  493bc3         REX.W cmpq rax,r11
+0x2254cef86a88    a8  0f852d050000   jnz 0x2254cef86fbb  <+0x5db>
+0x2254cef86a8e    ae  48b8c12450e0de330000 REX.W movq rax,0x33dee05024c1    ;; object: 0x33dee05024c1 <Map(HOLEY_ELEMENTS)>
+0x2254cef86a98    b8  48bf11281042861a0000 REX.W movq rdi,0x1a8642102811    ;; object: 0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef86aa2    c2  483947ff       REX.W cmpq [rdi-0x1],rax
+0x2254cef86aa6    c6  0f8514050000   jnz 0x2254cef86fc0  <+0x5e0>
+0x2254cef86aac    cc  4c895d80       REX.W movq [rbp-0x80],r11
+0x2254cef86ab0    d0  4c89a570ffffff REX.W movq [rbp-0x90],r12
+0x2254cef86ab7    d7  4c89bd68ffffff REX.W movq [rbp-0x98],r15
+0x2254cef86abe    de  48be512d1042861a0000 REX.W movq rsi,0x1a8642102d51    ;; object: 0x1a8642102d51 <Object map = 0x33dee0543b79>
+0x2254cef86ac8    e8  48bab1bef018c42b0000 REX.W movq rdx,0x2bc418f0beb1    ;; object: 0x2bc418f0beb1 <JSGlobal Object>
+0x2254cef86ad2    f2  488bda         REX.W movq rbx,rdx
+0x2254cef86ad5    f5  6666660f1f840000000000 nop
+0x2254cef86ae0   100  488b4aff       REX.W movq rcx,[rdx-0x1]
+0x2254cef86ae4   104  440fb6410b     movzxbl r8,[rcx+0xb]
+0x2254cef86ae9   109  4180f8b7       cmpb r8l,0xb7
+0x2254cef86aed   10d  0f8603030000   jna 0x2254cef86df6  <+0x416>
+0x2254cef86af3   113  488b5117       REX.W movq rdx,[rcx+0x17]
+0x2254cef86af7   117  493955b0       REX.W cmpq [r13-0x50],rdx
+0x2254cef86afb   11b  0f8497000000   jz 0x2254cef86b98  <+0x1b8>
+0x2254cef86b01   121  483bd6         REX.W cmpq rdx,rsi
+0x2254cef86b04   124  75da           jnz 0x2254cef86ae0  <+0x100>
+0x2254cef86b06   126  48b9c92f54e0de330000 REX.W movq rcx,0x33dee0542fc9    ;; object: 0x33dee0542fc9 <Map(HOLEY_ELEMENTS)>
+0x2254cef86b10   130  48394bff       REX.W cmpq [rbx-0x1],rcx
+0x2254cef86b14   134  0f85ab040000   jnz 0x2254cef86fc5  <+0x5e5>
+0x2254cef86b1a   13a  48c7431700000000 REX.W movq [rbx+0x17],0x0
+0x2254cef86b22   142  48c7431f00000000 REX.W movq [rbx+0x1f],0x0
+0x2254cef86b2a   14a  49b8293154e0de330000 REX.W movq r8,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef86b34   154  4c8943ff       REX.W movq [rbx-0x1],r8
+0x2254cef86b38   158  48c7c10000f8ff REX.W movq rcx,0xfff80000
+0x2254cef86b3f   15f  4823cb         REX.W andq rcx,rbx
+0x2254cef86b42   162  f6410804       testb [rcx+0x8],0x4
+0x2254cef86b46   166  0f853e040000   jnz 0x2254cef86f8a  <+0x5aa>
+0x2254cef86b4c   16c  498b4db0       REX.W movq rcx,[r13-0x50]
+0x2254cef86b50   170  48894b27       REX.W movq [rbx+0x27],rcx
+0x2254cef86b54   174  410fb7d4       movzxwl rdx,r12
+0x2254cef86b58   178  48b9e1301042861a0000 REX.W movq rcx,0x1a86421030e1    ;; object: 0x1a86421030e1 <JSFunction fromNumber (sfi = 0x1be8c20d2ff9)>
+0x2254cef86b62   182  483941ff       REX.W cmpq [rcx-0x1],rax
+0x2254cef86b66   186  0f855e040000   jnz 0x2254cef86fca  <+0x5ea>
+0x2254cef86b6c   18c  4c89e1         REX.W movq rcx,r12
+0x2254cef86b6f   18f  c1e910         shrl rcx, 16
+0x2254cef86b72   192  4183ff00       cmpl r15,0x0
+0x2254cef86b76   196  0f8453040000   jz 0x2254cef86fcf  <+0x5ef>
+0x2254cef86b7c   19c  48c1e220       REX.W shlq rdx, 32
+0x2254cef86b80   1a0  48895317       REX.W movq [rbx+0x17],rdx
+0x2254cef86b84   1a4  48c1e120       REX.W shlq rcx, 32
+0x2254cef86b88   1a8  48894b1f       REX.W movq [rbx+0x1f],rcx
+0x2254cef86b8c   1ac  48899d78ffffff REX.W movq [rbp-0x88],rbx
+0x2254cef86b93   1b3  e929000000     jmp 0x2254cef86bc1  <+0x1e1>
+0x2254cef86b98   1b8  498b4da0       REX.W movq rcx,[r13-0x60]
+0x2254cef86b9c   1bc  51             push rcx
+0x2254cef86b9d   1bd  4156           push r14
+0x2254cef86b9f   1bf  51             push rcx
+0x2254cef86ba0   1c0  48bec1271042861a0000 REX.W movq rsi,0x1a86421027c1    ;; object: 0x1a86421027c1 <FixedArray[8]>
+0x2254cef86baa   1ca  488bd7         REX.W movq rdx,rdi
+0x2254cef86bad   1cd  b802000000     movl rax,0x2
+0x2254cef86bb2   1d2  488bd9         REX.W movq rbx,rcx
+0x2254cef86bb5   1d5  e8e6eae7ff     call 0x2254cee056a0  (JSConstructStubGenericUnrestrictedReturn)    ;; code: BUILTIN
+0x2254cef86bba   1da  48898578ffffff REX.W movq [rbp-0x88],rax
+0x2254cef86bc1   1e1  48bf11281042861a0000 REX.W movq rdi,0x1a8642102811    ;; object: 0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef86bcb   1eb  48b8c12450e0de330000 REX.W movq rax,0x33dee05024c1    ;; object: 0x33dee05024c1 <Map(HOLEY_ELEMENTS)>
+0x2254cef86bd5   1f5  483947ff       REX.W cmpq [rdi-0x1],rax
+0x2254cef86bd9   1f9  0f85fa030000   jnz 0x2254cef86fd9  <+0x5f9>
+0x2254cef86bdf   1ff  488b4d88       REX.W movq rcx,[rbp-0x78]
+0x2254cef86be3   203  48c1e920       REX.W shrq rcx, 32
+0x2254cef86be7   207  48894d90       REX.W movq [rbp-0x70],rcx
+0x2254cef86beb   20b  48bbb1bef018c42b0000 REX.W movq rbx,0x2bc418f0beb1    ;; object: 0x2bc418f0beb1 <JSGlobal Object>
+0x2254cef86bf5   215  48ba512d1042861a0000 REX.W movq rdx,0x1a8642102d51    ;; object: 0x1a8642102d51 <Object map = 0x33dee0543b79>
+0x2254cef86bff   21f  90             nop
+0x2254cef86c00   220  488b73ff       REX.W movq rsi,[rbx-0x1]
+0x2254cef86c04   224  440fb6460b     movzxbl r8,[rsi+0xb]
+0x2254cef86c09   229  4180f8b7       cmpb r8l,0xb7
+0x2254cef86c0d   22d  0f86d8020000   jna 0x2254cef86eeb  <+0x50b>
+0x2254cef86c13   233  488b5e17       REX.W movq rbx,[rsi+0x17]
+0x2254cef86c17   237  49395db0       REX.W cmpq [r13-0x50],rbx
+0x2254cef86c1b   23b  0f8492000000   jz 0x2254cef86cb3  <+0x2d3>
+0x2254cef86c21   241  483bda         REX.W cmpq rbx,rdx
+0x2254cef86c24   244  75da           jnz 0x2254cef86c00  <+0x220>
+0x2254cef86c26   246  48bbb1bef018c42b0000 REX.W movq rbx,0x2bc418f0beb1    ;; object: 0x2bc418f0beb1 <JSGlobal Object>
+0x2254cef86c30   250  48bac92f54e0de330000 REX.W movq rdx,0x33dee0542fc9    ;; object: 0x33dee0542fc9 <Map(HOLEY_ELEMENTS)>
+0x2254cef86c3a   25a  483953ff       REX.W cmpq [rbx-0x1],rdx
+0x2254cef86c3e   25e  0f859a030000   jnz 0x2254cef86fde  <+0x5fe>
+0x2254cef86c44   264  48c7431700000000 REX.W movq [rbx+0x17],0x0
+0x2254cef86c4c   26c  48c7431f00000000 REX.W movq [rbx+0x1f],0x0
+0x2254cef86c54   274  49b8293154e0de330000 REX.W movq r8,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef86c5e   27e  4c8943ff       REX.W movq [rbx-0x1],r8
+0x2254cef86c62   282  48c7c60000f8ff REX.W movq rsi,0xfff80000
+0x2254cef86c69   289  4823f3         REX.W andq rsi,rbx
+0x2254cef86c6c   28c  f6460804       testb [rsi+0x8],0x4
+0x2254cef86c70   290  0f85f2020000   jnz 0x2254cef86f68  <+0x588>
+0x2254cef86c76   296  498b55b0       REX.W movq rdx,[r13-0x50]
+0x2254cef86c7a   29a  48895327       REX.W movq [rbx+0x27],rdx
+0x2254cef86c7e   29e  0fb7d1         movzxwl rdx,rcx
+0x2254cef86c81   2a1  488bf1         REX.W movq rsi,rcx
+0x2254cef86c84   2a4  c1ee10         shrl rsi, 16
+0x2254cef86c87   2a7  48bfe1301042861a0000 REX.W movq rdi,0x1a86421030e1    ;; object: 0x1a86421030e1 <JSFunction fromNumber (sfi = 0x1be8c20d2ff9)>
+0x2254cef86c91   2b1  483947ff       REX.W cmpq [rdi-0x1],rax
+0x2254cef86c95   2b5  0f8548030000   jnz 0x2254cef86fe3  <+0x603>
+0x2254cef86c9b   2bb  48c1e220       REX.W shlq rdx, 32
+0x2254cef86c9f   2bf  48895317       REX.W movq [rbx+0x17],rdx
+0x2254cef86ca3   2c3  48c1e620       REX.W shlq rsi, 32
+0x2254cef86ca7   2c7  4889731f       REX.W movq [rbx+0x1f],rsi
+0x2254cef86cab   2cb  488bc3         REX.W movq rax,rbx
+0x2254cef86cae   2ce  e923000000     jmp 0x2254cef86cd6  <+0x2f6>
+0x2254cef86cb3   2d3  498b45a0       REX.W movq rax,[r13-0x60]
+0x2254cef86cb7   2d7  50             push rax
+0x2254cef86cb8   2d8  ff7588         push [rbp-0x78]
+0x2254cef86cbb   2db  50             push rax
+0x2254cef86cbc   2dc  48bec1271042861a0000 REX.W movq rsi,0x1a86421027c1    ;; object: 0x1a86421027c1 <FixedArray[8]>
+0x2254cef86cc6   2e6  488bd7         REX.W movq rdx,rdi
+0x2254cef86cc9   2e9  488bd8         REX.W movq rbx,rax
+0x2254cef86ccc   2ec  b802000000     movl rax,0x2
+0x2254cef86cd1   2f1  e8cae9e7ff     call 0x2254cee056a0  (JSConstructStubGenericUnrestrictedReturn)    ;; code: BUILTIN
+0x2254cef86cd6   2f6  488b9d78ffffff REX.W movq rbx,[rbp-0x88]
+0x2254cef86cdd   2fd  48ba293154e0de330000 REX.W movq rdx,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef86ce7   307  483953ff       REX.W cmpq [rbx-0x1],rdx
+0x2254cef86ceb   30b  0f85fc020000   jnz 0x2254cef86fed  <+0x60d>
+0x2254cef86cf1   311  483950ff       REX.W cmpq [rax-0x1],rdx
+0x2254cef86cf5   315  0f85f7020000   jnz 0x2254cef86ff2  <+0x612>
+0x2254cef86cfb   31b  8b501b         movl rdx,[rax+0x1b]
+0x2254cef86cfe   31e  8b4b1b         movl rcx,[rbx+0x1b]
+0x2254cef86d01   321  488bf1         REX.W movq rsi,rcx
+0x2254cef86d04   324  0faff2         imull rsi,rdx
+0x2254cef86d07   327  0f80ea020000   jo 0x2254cef86ff7  <+0x617>
+0x2254cef86d0d   32d  8b7b23         movl rdi,[rbx+0x23]
+0x2254cef86d10   330  0fafd7         imull rdx,rdi
+0x2254cef86d13   333  0f80e3020000   jo 0x2254cef86ffc  <+0x61c>
+0x2254cef86d19   339  488bfe         REX.W movq rdi,rsi
+0x2254cef86d1c   33c  c1ef10         shrl rdi, 16
+0x2254cef86d1f   33f  03d7           addl rdx,rdi
+0x2254cef86d21   341  0f80da020000   jo 0x2254cef87001  <+0x621>
+0x2254cef86d27   347  8b7823         movl rdi,[rax+0x23]
+0x2254cef86d2a   34a  0faff9         imull rdi,rcx
+0x2254cef86d2d   34d  0f80d3020000   jo 0x2254cef87006  <+0x626>
+0x2254cef86d33   353  0fb7d2         movzxwl rdx,rdx
+0x2254cef86d36   356  03fa           addl rdi,rdx
+0x2254cef86d38   358  0f80cd020000   jo 0x2254cef8700b  <+0x62b>
+0x2254cef86d3e   35e  0fb7c6         movzxwl rax,rsi
+0x2254cef86d41   361  0fb7d7         movzxwl rdx,rdi
+0x2254cef86d44   364  488bc8         REX.W movq rcx,rax
+0x2254cef86d47   367  48c1e120       REX.W shlq rcx, 32
+0x2254cef86d4b   36b  48894b17       REX.W movq [rbx+0x17],rcx
+0x2254cef86d4f   36f  488bca         REX.W movq rcx,rdx
+0x2254cef86d52   372  48c1e120       REX.W shlq rcx, 32
+0x2254cef86d56   376  48894b1f       REX.W movq [rbx+0x1f],rcx
+0x2254cef86d5a   37a  69d200000100   imull rdx,rdx,0x10000
+0x2254cef86d60   380  0f80aa020000   jo 0x2254cef87010  <+0x630>
+0x2254cef86d66   386  03c2           addl rax,rdx
+0x2254cef86d68   388  0f80a7020000   jo 0x2254cef87015  <+0x635>
+0x2254cef86d6e   38e  83bd68ffffff00 cmpl [rbp-0x98],0x0
+0x2254cef86d75   395  0f849f020000   jz 0x2254cef8701a  <+0x63a>
+0x2254cef86d7b   39b  038570ffffff   addl rax,[rbp-0x90]
+0x2254cef86d81   3a1  0f8098020000   jo 0x2254cef8701f  <+0x63f>
+0x2254cef86d87   3a7  48c1e020       REX.W shlq rax, 32
+0x2254cef86d8b   3ab  488b5590       REX.W movq rdx,[rbp-0x70]
+0x2254cef86d8f   3af  83eaff         subl rdx,0xff
+0x2254cef86d92   3b2  0f808c020000   jo 0x2254cef87024  <+0x644>
+0x2254cef86d98   3b8  48c1e220       REX.W shlq rdx, 32
+0x2254cef86d9c   3bc  48894598       REX.W movq [rbp-0x68],rax
+0x2254cef86da0   3c0  488bca         REX.W movq rcx,rdx
+0x2254cef86da3   3c3  e968fcffff     jmp 0x2254cef86a10  <+0x30>
+0x2254cef86da8   3c8  48b9c97ebb1973240000 REX.W movq rcx,0x247319bb7ec9    ;; object: 0x247319bb7ec9 <String[7]: console>
+0x2254cef86db2   3d2  48b80000000012000000 REX.W movq rax,0x1200000000
+0x2254cef86dbc   3dc  488b75a0       REX.W movq rsi,[rbp-0x60]
+0x2254cef86dc0   3e0  e89b67f5ff     call 0x2254ceedd560  (LoadGlobalICTrampoline)    ;; code: LOAD_GLOBAL_IC
+0x2254cef86dc5   3e5  e83ad3dfff     call 0x2254ced84104     ;; soft deoptimization bailout 26
+0x2254cef86dca   3ea  48bb307c0c0100000000 REX.W movq rbx,0x10c7c30
+0x2254cef86dd4   3f4  33c0           xorl rax,rax
+0x2254cef86dd6   3f6  488b75a0       REX.W movq rsi,[rbp-0x60]
+0x2254cef86dda   3fa  e801d8e7ff     call 0x2254cee045e0     ;; code: STUB, CEntryStub, minor: 8
+0x2254cef86ddf   3ff  49b90000000040420f00 REX.W movq r9,0xf424000000000
+0x2254cef86de9   409  488b4d88       REX.W movq rcx,[rbp-0x78]
+0x2254cef86ded   40d  4c8b45c8       REX.W movq r8,[rbp-0x38]
+0x2254cef86df1   411  e94bfcffff     jmp 0x2254cef86a41  <+0x61>
+0x2254cef86df6   416  4180f8b4       cmpb r8l,0xb4
+0x2254cef86dfa   41a  0f8294000000   jc 0x2254cef86e94  <+0x4b4>
+0x2254cef86e00   420  52             push rdx
+0x2254cef86e01   421  48ba512d1042861a0000 REX.W movq rdx,0x1a8642102d51    ;; object: 0x1a8642102d51 <Object map = 0x33dee0543b79>
+0x2254cef86e0b   42b  52             push rdx
+0x2254cef86e0c   42c  48bbe07b0d0100000000 REX.W movq rbx,0x10d7be0
+0x2254cef86e16   436  b802000000     movl rax,0x2
+0x2254cef86e1b   43b  48bec1271042861a0000 REX.W movq rsi,0x1a86421027c1    ;; object: 0x1a86421027c1 <FixedArray[8]>
+0x2254cef86e25   445  e8b6d7e7ff     call 0x2254cee045e0     ;; code: STUB, CEntryStub, minor: 8
+0x2254cef86e2a   44a  493945b8       REX.W cmpq [r13-0x48],rax
+0x2254cef86e2e   44e  0f8413000000   jz 0x2254cef86e47  <+0x467>
+0x2254cef86e34   454  4c8b7598       REX.W movq r14,[rbp-0x68]
+0x2254cef86e38   458  48bf11281042861a0000 REX.W movq rdi,0x1a8642102811    ;; object: 0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef86e42   462  e951fdffff     jmp 0x2254cef86b98  <+0x1b8>
+0x2254cef86e47   467  4c8b7598       REX.W movq r14,[rbp-0x68]
+0x2254cef86e4b   46b  4c8b5d80       REX.W movq r11,[rbp-0x80]
+0x2254cef86e4f   46f  4c8ba570ffffff REX.W movq r12,[rbp-0x90]
+0x2254cef86e56   476  4c8bbd68ffffff REX.W movq r15,[rbp-0x98]
+0x2254cef86e5d   47d  48bbb1bef018c42b0000 REX.W movq rbx,0x2bc418f0beb1    ;; object: 0x2bc418f0beb1 <JSGlobal Object>
+0x2254cef86e67   487  48bf11281042861a0000 REX.W movq rdi,0x1a8642102811    ;; object: 0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef86e71   491  48b8c12450e0de330000 REX.W movq rax,0x33dee05024c1    ;; object: 0x33dee05024c1 <Map(HOLEY_ELEMENTS)>
+0x2254cef86e7b   49b  48be512d1042861a0000 REX.W movq rsi,0x1a8642102d51    ;; object: 0x1a8642102d51 <Object map = 0x33dee0543b79>
+0x2254cef86e85   4a5  49b90000000040420f00 REX.W movq r9,0xf424000000000
+0x2254cef86e8f   4af  e972fcffff     jmp 0x2254cef86b06  <+0x126>
+0x2254cef86e94   4b4  4c8b7598       REX.W movq r14,[rbp-0x68]
+0x2254cef86e98   4b8  4c8b5d80       REX.W movq r11,[rbp-0x80]
+0x2254cef86e9c   4bc  4c8ba570ffffff REX.W movq r12,[rbp-0x90]
+0x2254cef86ea3   4c3  4c8bbd68ffffff REX.W movq r15,[rbp-0x98]
+0x2254cef86eaa   4ca  49b8293154e0de330000 REX.W movq r8,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef86eb4   4d4  48bbb1bef018c42b0000 REX.W movq rbx,0x2bc418f0beb1    ;; object: 0x2bc418f0beb1 <JSGlobal Object>
+0x2254cef86ebe   4de  48bf11281042861a0000 REX.W movq rdi,0x1a8642102811    ;; object: 0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef86ec8   4e8  48b8c12450e0de330000 REX.W movq rax,0x33dee05024c1    ;; object: 0x33dee05024c1 <Map(HOLEY_ELEMENTS)>
+0x2254cef86ed2   4f2  48be512d1042861a0000 REX.W movq rsi,0x1a8642102d51    ;; object: 0x1a8642102d51 <Object map = 0x33dee0543b79>
+0x2254cef86edc   4fc  49b90000000040420f00 REX.W movq r9,0xf424000000000
+0x2254cef86ee6   506  e9adfcffff     jmp 0x2254cef86b98  <+0x1b8>
+0x2254cef86eeb   50b  4180f8b4       cmpb r8l,0xb4
+0x2254cef86eef   50f  0f8256000000   jc 0x2254cef86f4b  <+0x56b>
+0x2254cef86ef5   515  53             push rbx
+0x2254cef86ef6   516  48ba512d1042861a0000 REX.W movq rdx,0x1a8642102d51    ;; object: 0x1a8642102d51 <Object map = 0x33dee0543b79>
+0x2254cef86f00   520  52             push rdx
+0x2254cef86f01   521  48bbe07b0d0100000000 REX.W movq rbx,0x10d7be0
+0x2254cef86f0b   52b  b802000000     movl rax,0x2
+0x2254cef86f10   530  48bec1271042861a0000 REX.W movq rsi,0x1a86421027c1    ;; object: 0x1a86421027c1 <FixedArray[8]>
+0x2254cef86f1a   53a  e8c1d6e7ff     call 0x2254cee045e0     ;; code: STUB, CEntryStub, minor: 8
+0x2254cef86f1f   53f  493945b8       REX.W cmpq [r13-0x48],rax
+0x2254cef86f23   543  0f840f000000   jz 0x2254cef86f38  <+0x558>
+0x2254cef86f29   549  48bf11281042861a0000 REX.W movq rdi,0x1a8642102811    ;; object: 0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef86f33   553  e97bfdffff     jmp 0x2254cef86cb3  <+0x2d3>
+0x2254cef86f38   558  488b4d90       REX.W movq rcx,[rbp-0x70]
+0x2254cef86f3c   55c  48b8c12450e0de330000 REX.W movq rax,0x33dee05024c1    ;; object: 0x33dee05024c1 <Map(HOLEY_ELEMENTS)>
+0x2254cef86f46   566  e9dbfcffff     jmp 0x2254cef86c26  <+0x246>
+0x2254cef86f4b   56b  488b4d90       REX.W movq rcx,[rbp-0x70]
+0x2254cef86f4f   56f  49b8293154e0de330000 REX.W movq r8,0x33dee0543129    ;; object: 0x33dee0543129 <Map(HOLEY_ELEMENTS)>
+0x2254cef86f59   579  48bf11281042861a0000 REX.W movq rdi,0x1a8642102811    ;; object: 0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>
+0x2254cef86f63   583  e94bfdffff     jmp 0x2254cef86cb3  <+0x2d3>
+0x2254cef86f68   588  48c7c60000f8ff REX.W movq rsi,0xfff80000
+0x2254cef86f6f   58f  4923f0         REX.W andq rsi,r8
+0x2254cef86f72   592  f6460802       testb [rsi+0x8],0x2
+0x2254cef86f76   596  0f84fafcffff   jz 0x2254cef86c76  <+0x296>
+0x2254cef86f7c   59c  488d53ff       REX.W leaq rdx,[rbx-0x1]
+0x2254cef86f80   5a0  e89bf6ffff     call 0x2254cef86620     ;; code: STUB, RecordWriteStub, minor: 12899
+0x2254cef86f85   5a5  e9ecfcffff     jmp 0x2254cef86c76  <+0x296>
+0x2254cef86f8a   5aa  48c7c10000f8ff REX.W movq rcx,0xfff80000
+0x2254cef86f91   5b1  4923c8         REX.W andq rcx,r8
+0x2254cef86f94   5b4  f6410802       testb [rcx+0x8],0x2
+0x2254cef86f98   5b8  0f84aefbffff   jz 0x2254cef86b4c  <+0x16c>
+0x2254cef86f9e   5be  488d53ff       REX.W leaq rdx,[rbx-0x1]
+0x2254cef86fa2   5c2  e819e6ffff     call 0x2254cef855c0     ;; code: STUB, RecordWriteStub, minor: 12819
+0x2254cef86fa7   5c7  e9a0fbffff     jmp 0x2254cef86b4c  <+0x16c>
+0x2254cef86fac   5cc  e84fd0cfff     call 0x2254cec84000     ;; deoptimization bailout 0
+0x2254cef86fb1   5d1  e854d0cfff     call 0x2254cec8400a     ;; deoptimization bailout 1
+0x2254cef86fb6   5d6  e859d0cfff     call 0x2254cec84014     ;; deoptimization bailout 2
+0x2254cef86fbb   5db  e85ed0cfff     call 0x2254cec8401e     ;; deoptimization bailout 3
+0x2254cef86fc0   5e0  e863d0cfff     call 0x2254cec84028     ;; deoptimization bailout 4
+0x2254cef86fc5   5e5  e868d0cfff     call 0x2254cec84032     ;; deoptimization bailout 5
+0x2254cef86fca   5ea  e86dd0cfff     call 0x2254cec8403c     ;; deoptimization bailout 6
+0x2254cef86fcf   5ef  e872d0cfff     call 0x2254cec84046     ;; deoptimization bailout 7
+0x2254cef86fd4   5f4  e877d0cfff     call 0x2254cec84050     ;; deoptimization bailout 8
+0x2254cef86fd9   5f9  e87cd0cfff     call 0x2254cec8405a     ;; deoptimization bailout 9
+0x2254cef86fde   5fe  e881d0cfff     call 0x2254cec84064     ;; deoptimization bailout 10
+0x2254cef86fe3   603  e886d0cfff     call 0x2254cec8406e     ;; deoptimization bailout 11
+0x2254cef86fe8   608  e88bd0cfff     call 0x2254cec84078     ;; deoptimization bailout 12
+0x2254cef86fed   60d  e890d0cfff     call 0x2254cec84082     ;; deoptimization bailout 13
+0x2254cef86ff2   612  e895d0cfff     call 0x2254cec8408c     ;; deoptimization bailout 14
+0x2254cef86ff7   617  e89ad0cfff     call 0x2254cec84096     ;; deoptimization bailout 15
+0x2254cef86ffc   61c  e89fd0cfff     call 0x2254cec840a0     ;; deoptimization bailout 16
+0x2254cef87001   621  e8a4d0cfff     call 0x2254cec840aa     ;; deoptimization bailout 17
+0x2254cef87006   626  e8a9d0cfff     call 0x2254cec840b4     ;; deoptimization bailout 18
+0x2254cef8700b   62b  e8aed0cfff     call 0x2254cec840be     ;; deoptimization bailout 19
+0x2254cef87010   630  e8b3d0cfff     call 0x2254cec840c8     ;; deoptimization bailout 20
+0x2254cef87015   635  e8b8d0cfff     call 0x2254cec840d2     ;; deoptimization bailout 21
+0x2254cef8701a   63a  e8bdd0cfff     call 0x2254cec840dc     ;; deoptimization bailout 22
+0x2254cef8701f   63f  e8c2d0cfff     call 0x2254cec840e6     ;; deoptimization bailout 23
+0x2254cef87024   644  e8c7d0cfff     call 0x2254cec840f0     ;; deoptimization bailout 24
+0x2254cef87029   649  e8ccd0cfff     call 0x2254cec840fa     ;; deoptimization bailout 25
+0x2254cef8702e   64e  e8dbd0cfff     call 0x2254cec8410e     ;; deoptimization bailout 27
+0x2254cef87033   653  e8e0d0cfff     call 0x2254cec84118     ;; deoptimization bailout 28
+0x2254cef87038   658  e8e5d0cfff     call 0x2254cec84122     ;; deoptimization bailout 29
+0x2254cef8703d   65d  90             nop
+0x2254cef8703e   65e  90             nop
+0x2254cef8703f   65f  90             nop
+0x2254cef87040   660  90             nop
+0x2254cef87041   661  90             nop
+0x2254cef87042   662  90             nop
+0x2254cef87043   663  90             nop
+0x2254cef87044   664  90             nop
+0x2254cef87045   665  90             nop
+0x2254cef87046   666  90             nop
+0x2254cef87047   667  90             nop
+0x2254cef87048   668  90             nop
+0x2254cef87049   669  90             nop
+0x2254cef8704a   66a  6690           nop
+
+Source positions:
+ pc offset  position
+       1c0       801
+       2dc       801
+       3c8       223
+       3ea       140
+
+Inlined functions (count = 5)
+ 0x1be8c20cf5d1 <SharedFunctionInfo multiplyUint32>
+ 0x1be8c20d3189 <SharedFunctionInfo UINT32.toNumber>
+ 0x1be8c20d34a9 <SharedFunctionInfo UINT32.multiply>
+ 0x1be8c20d2e69 <SharedFunctionInfo UINT32>
+ 0x1be8c20d2ff9 <SharedFunctionInfo fromNumber>
+
+Deoptimization Input Data (deopt points = 30)
+ index  bytecode-offset  trampoline_pc     pc
+     0               23            5cc     NA 
+     1               23            5d1     NA 
+     2               23            5d6     NA 
+     3               23            5db     NA 
+     4               23            5e0     NA 
+     5               26            5e5     NA 
+     6               50            5ea     NA 
+     7               50            5ef     NA 
+     8               19            5f4    1da 
+     9               19            5f9     NA 
+    10               26            5fe     NA 
+    11               50            603     NA 
+    12               19            608    2f6 
+    13               25            60d     NA 
+    14               25            612     NA 
+    15               25            617     NA 
+    16               25            61c     NA 
+    17               25            621     NA 
+    18               25            626     NA 
+    19               25            62b     NA 
+    20               38            630     NA 
+    21               38            635     NA 
+    22               38            63a     NA 
+    23               38            63f     NA 
+    24               38            644     NA 
+    25               58            649    3e5 
+    26               63             NA     NA 
+    27               28            64e    3ff 
+    28              127            653    44a 
+    29              127            658    53f 
+
+Safepoints (size = 86)
+0x2254cef86bba   1da  000110110000100000000 (sp -> fp)       8
+0x2254cef86cd6   2f6  001110110000100000000 (sp -> fp)      12
+0x2254cef86dc5   3e5  000000110000000000000 (sp -> fp)      25
+0x2254cef86ddf   3ff  000010110000100000000 (sp -> fp)      27
+0x2254cef86e2a   44a  000110110000100000000 (sp -> fp)      28
+0x2254cef86f1f   53f  001110110000100000000 (sp -> fp)      29
+
+RelocInfo (size = 114)
+0x2254cef869f1  code target (BUILTIN)  (0x2254cee13440)
+0x2254cef86a4d  embedded object  (0x33dee05449e9 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86a7d  embedded object  (0x1a8642102859 <JSFunction multiplyUint32 (sfi = 0x1be8c20cf5d1)>)
+0x2254cef86a90  embedded object  (0x33dee05024c1 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86a9a  embedded object  (0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef86ac0  embedded object  (0x1a8642102d51 <Object map = 0x33dee0543b79>)
+0x2254cef86aca  embedded object  (0x2bc418f0beb1 <JSGlobal Object>)
+0x2254cef86b08  embedded object  (0x33dee0542fc9 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86b2c  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86b5a  embedded object  (0x1a86421030e1 <JSFunction fromNumber (sfi = 0x1be8c20d2ff9)>)
+0x2254cef86ba2  embedded object  (0x1a86421027c1 <FixedArray[8]>)
+0x2254cef86bb6  code target (BUILTIN)  (0x2254cee056a0)
+0x2254cef86bc3  embedded object  (0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef86bcd  embedded object  (0x33dee05024c1 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86bed  embedded object  (0x2bc418f0beb1 <JSGlobal Object>)
+0x2254cef86bf7  embedded object  (0x1a8642102d51 <Object map = 0x33dee0543b79>)
+0x2254cef86c28  embedded object  (0x2bc418f0beb1 <JSGlobal Object>)
+0x2254cef86c32  embedded object  (0x33dee0542fc9 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86c56  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86c89  embedded object  (0x1a86421030e1 <JSFunction fromNumber (sfi = 0x1be8c20d2ff9)>)
+0x2254cef86cbe  embedded object  (0x1a86421027c1 <FixedArray[8]>)
+0x2254cef86cd2  code target (BUILTIN)  (0x2254cee056a0)
+0x2254cef86cdf  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86daa  embedded object  (0x247319bb7ec9 <String[7]: console>)
+0x2254cef86dc1  code target (LOAD_GLOBAL_IC)  (0x2254ceedd560)
+0x2254cef86dc6  runtime entry
+0x2254cef86ddb  code target (STUB)  (0x2254cee045e0)
+0x2254cef86e03  embedded object  (0x1a8642102d51 <Object map = 0x33dee0543b79>)
+0x2254cef86e1d  embedded object  (0x1a86421027c1 <FixedArray[8]>)
+0x2254cef86e26  code target (STUB)  (0x2254cee045e0)
+0x2254cef86e3a  embedded object  (0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef86e5f  embedded object  (0x2bc418f0beb1 <JSGlobal Object>)
+0x2254cef86e69  embedded object  (0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef86e73  embedded object  (0x33dee05024c1 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86e7d  embedded object  (0x1a8642102d51 <Object map = 0x33dee0543b79>)
+0x2254cef86eac  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86eb6  embedded object  (0x2bc418f0beb1 <JSGlobal Object>)
+0x2254cef86ec0  embedded object  (0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef86eca  embedded object  (0x33dee05024c1 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86ed4  embedded object  (0x1a8642102d51 <Object map = 0x33dee0543b79>)
+0x2254cef86ef8  embedded object  (0x1a8642102d51 <Object map = 0x33dee0543b79>)
+0x2254cef86f12  embedded object  (0x1a86421027c1 <FixedArray[8]>)
+0x2254cef86f1b  code target (STUB)  (0x2254cee045e0)
+0x2254cef86f2b  embedded object  (0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef86f3e  embedded object  (0x33dee05024c1 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86f51  embedded object  (0x33dee0543129 <Map(HOLEY_ELEMENTS)>)
+0x2254cef86f5b  embedded object  (0x1a8642102811 <JSFunction UINT32 (sfi = 0x1be8c20d2e69)>)
+0x2254cef86f81  code target (STUB)  (0x2254cef86620)
+0x2254cef86fa3  code target (STUB)  (0x2254cef855c0)
+0x2254cef86fad  runtime entry  (deoptimization bailout 0)
+0x2254cef86fb2  runtime entry  (deoptimization bailout 1)
+0x2254cef86fb7  runtime entry  (deoptimization bailout 2)
+0x2254cef86fbc  runtime entry  (deoptimization bailout 3)
+0x2254cef86fc1  runtime entry  (deoptimization bailout 4)
+0x2254cef86fc6  runtime entry  (deoptimization bailout 5)
+0x2254cef86fcb  runtime entry  (deoptimization bailout 6)
+0x2254cef86fd0  runtime entry  (deoptimization bailout 7)
+0x2254cef86fd5  runtime entry  (deoptimization bailout 8)
+0x2254cef86fda  runtime entry  (deoptimization bailout 9)
+0x2254cef86fdf  runtime entry  (deoptimization bailout 10)
+0x2254cef86fe4  runtime entry  (deoptimization bailout 11)
+0x2254cef86fe9  runtime entry  (deoptimization bailout 12)
+0x2254cef86fee  runtime entry  (deoptimization bailout 13)
+0x2254cef86ff3  runtime entry  (deoptimization bailout 14)
+0x2254cef86ff8  runtime entry  (deoptimization bailout 15)
+0x2254cef86ffd  runtime entry  (deoptimization bailout 16)
+0x2254cef87002  runtime entry  (deoptimization bailout 17)
+0x2254cef87007  runtime entry  (deoptimization bailout 18)
+0x2254cef8700c  runtime entry  (deoptimization bailout 19)
+0x2254cef87011  runtime entry  (deoptimization bailout 20)
+0x2254cef87016  runtime entry  (deoptimization bailout 21)
+0x2254cef8701b  runtime entry  (deoptimization bailout 22)
+0x2254cef87020  runtime entry  (deoptimization bailout 23)
+0x2254cef87025  runtime entry  (deoptimization bailout 24)
+0x2254cef8702a  runtime entry  (deoptimization bailout 25)
+0x2254cef8702f  runtime entry  (deoptimization bailout 27)
+0x2254cef87034  runtime entry  (deoptimization bailout 28)
+0x2254cef87039  runtime entry  (deoptimization bailout 29)
+
+--- End code ---
+many: 0
