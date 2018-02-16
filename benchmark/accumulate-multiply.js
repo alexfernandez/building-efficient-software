@@ -9,7 +9,7 @@ const b = 2838497487 | 0
 
 
 Suite()
-	.add('simple multiplication', function() {
+	.add('regular multiplication', function() {
 		let found = 0
 		for (let i = 0; i < N; i++) {
 			const c = a * b | 0
