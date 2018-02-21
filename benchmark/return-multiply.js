@@ -16,13 +16,6 @@ Suite()
 		}
 		return result
 	})
-	.add('constant loop', function() {
-		let result = 0
-		for (let i = 0; i < N; i++) {
-			result = a
-		}
-		return result
-	})
 	.add('regular multiplication', function() {
 		let result = 0
 		for (let i = 0; i < N; i++) {
@@ -62,7 +55,7 @@ Suite()
 		console.log(String(event.target));
 	})
 	.on('complete', function() {
-		console.log('Fastest: %j', this.filter('all'));
+		console.log('Fastest: %j', this.filter('fastest').map('name'));
 	})
 	.run({async: true});
 
